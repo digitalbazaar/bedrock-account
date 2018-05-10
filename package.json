@@ -20,11 +20,15 @@
     "url": "https://github.com/digitalbazaar/bedrock-account/issues"
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-account",
-  "dependencies": {},
+  "dependencies": {
+    "fast-json-patch": "^2.0.6"
+  },
   "peerDependencies": {
     "bedrock": "^1.0.0",
+    "bedrock-identity": "^5.0.0",
     "bedrock-permission": "^2.2.0",
-    "bedrock-mongodb": "3.x - 5.x"
+    "bedrock-mongodb": "3.x - 5.x",
+    "bedrock-validation": "^2.4.0"
   },
   "directories": {
     "lib": "./lib"
