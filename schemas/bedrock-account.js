@@ -10,6 +10,10 @@ const schema = {
   title: 'User Account',
   type: 'object',
   properties: {
+    id: {
+      type: 'string',
+      required: true
+    },
     email: {
       type: 'string',
       required: true
