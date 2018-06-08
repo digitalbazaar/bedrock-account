@@ -22,7 +22,8 @@
   "homepage": "https://github.com/digitalbazaar/bedrock-account",
   "dependencies": {
     "assert-plus": "^1.0.0",
-    "fast-json-patch": "^2.0.6"
+    "fast-json-patch": "^2.0.6",
+    "lodash": "^4.17.10"
   },
   "peerDependencies": {
     "bedrock": "^1.0.0",
