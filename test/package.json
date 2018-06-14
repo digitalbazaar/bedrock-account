@@ -1,9 +1,12 @@
 {
-  "name": "bedrock-account",
-  "version": "0.1.1-0",
-  "description": "User accounts for Bedrock applications",
+  "name": "bedrock-account-test",
+  "version": "0.0.1-0",
+  "description": "Bedrock account test",
+  "private": true,
   "main": "./lib",
-  "scripts": {},
+  "scripts": {
+    "test": "node --preserve-symlinks test.js test"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/digitalbazaar/bedrock-account"
@@ -21,18 +24,15 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-account",
   "dependencies": {
-    "assert-plus": "^1.0.0",
-    "fast-json-patch": "^2.0.6",
-    "lodash": "^4.17.10"
-  },
-  "peerDependencies": {
     "bedrock": "^1.12.1",
+    "bedrock-account": "file:..",
     "bedrock-identity": "^5.0.0",
+    "bedrock-mongodb": "^5.1.2",
     "bedrock-permission": "^2.5.0",
-    "bedrock-mongodb": "3.x - 5.x",
-    "bedrock-validation": "^2.4.0"
-  },
-  "directories": {
-    "lib": "./lib"
+    "bedrock-test": "^2.0.0",
+    "bedrock-validation": "^2.4.0",
+    "fast-json-patch": "^2.0.6",
+    "lodash": "^4.17.4",
+    "uuid": "^3.2.1"
   }
 }
