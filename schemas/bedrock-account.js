@@ -6,17 +6,18 @@
 const bedrock = require('bedrock');
 
 const schema = {
-  required: true,
   title: 'User Account',
+  required: [
+    'email',
+    'id',
+  ],
   type: 'object',
   properties: {
     id: {
       type: 'string',
-      required: true
     },
     email: {
       type: 'string',
-      required: true
     }
   },
   additionalProperties: true
