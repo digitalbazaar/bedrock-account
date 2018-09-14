@@ -383,7 +383,7 @@ describe('bedrock-account', () => {
           account.should.be.an('object');
           account.id.should.equal(newAccount.id);
           account.email.should.equal(email);
-      });
+        });
       it('should properly generate a resource ID for three roles', async () => {
         const email = '6ed0734c-8a29-499f-8a21-eb3bd7923620@example.com';
         const newAccount = helpers.createAccount(email);
@@ -747,18 +747,18 @@ describe('bedrock-account', () => {
     describe('regular user', () => {
       it('returns PermissionDenied when another user ID is specified',
         async () => {
-        const actor = actors['alpha@example.com'];
-        const id = 'urn:uuid:nobody';
-        let err;
-        try {
-          await brAccount.exists({actor, id});
-        } catch(e) {
-          err = e;
-        }
-        should.exist(err);
-        err.name.should.equal('PermissionDenied');
-        err.details.sysPermission.should.equal('ACCOUNT_ACCESS');
-      });
+          const actor = actors['alpha@example.com'];
+          const id = 'urn:uuid:nobody';
+          let err;
+          try {
+            await brAccount.exists({actor, id});
+          } catch(e) {
+            err = e;
+          }
+          should.exist(err);
+          err.name.should.equal('PermissionDenied');
+          err.details.sysPermission.should.equal('ACCOUNT_ACCESS');
+        });
       it('returns true if own account exists', async () => {
         const actor = actors['alpha@example.com'];
         const account = accounts['alpha@example.com'].account;
