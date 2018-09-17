@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 2.0.0 - 2018-09-17
+
+### Changed
+- Use bedrock-validation 3.x.
+
 ## 1.0.0 - 2018-06-18
 
 ## 0.1.0 - 2018-05-08
