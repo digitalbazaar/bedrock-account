@@ -26,7 +26,7 @@
   "dependencies": {
     "bedrock": "^1.12.1",
     "bedrock-account": "file:..",
-    "bedrock-identity": "digitalbazaar/bedrock-identity#validation",
+    "bedrock-identity": "^6.0.0",
     "bedrock-mongodb": "^5.1.2",
     "bedrock-permission": "^2.5.0",
     "bedrock-test": "^2.0.0",
