@@ -513,7 +513,7 @@ describe('bedrock-account', () => {
         account.id.should.equal(newAccount.id);
         account.email.should.equal('UPDATED.' + email);
       });
-      it('should fail to update an account', async () => {
+      it('should throw Permission Denied', async () => {
         const email = '5060f106-6e81-11e8-b7d6-c312ad2e6655@example.com';
         const newAccount = helpers.createAccount(email);
         const newRecord = await brAccount.insert({
@@ -545,6 +545,40 @@ describe('bedrock-account', () => {
         should.exist(err);
         err.name.should.equal('PermissionDenied');
       });
+      it('should throw Record sequence does not match.', async () => {
+        const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          actor: null,
+          account: newAccount,
+          meta: {
+            sysResourceRole: [{
+              sysRole: 'bedrock-account.regular',
+              generateResource: 'id'
+            }]
+          }
+        });
+        const actor = await brAccount.getCapabilities({id: newAccount.id});
+        const updatedAccount = newRecord.account;
+        const observer = jsonpatch.observe(updatedAccount);
+        updatedAccount.email = 'UPDATED.' + email;
+        const patch = jsonpatch.generate(observer);
+        jsonpatch.unobserve(updatedAccount, observer);
+        try {
+          await brAccount.update({
+            actor,
+            id: updatedAccount.id,
+            patch,
+            sequence: 99
+          });
+          should.exist(undefined, 'update did not throw an error');
+        } catch(e) {
+          should.exist(e);
+          e.name.should.contain('InvalidStateError');
+          e.message.should.contain('sequence');
+        }
+      });
+
     });
   });
 
