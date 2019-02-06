@@ -447,6 +447,7 @@ describe('bedrock-account', () => {
         updatedAccount.email = 'UPDATED.' + email;
         const patch = jsonpatch.generate(observer);
         jsonpatch.unobserve(updatedAccount, observer);
+        console.log('updated id', updatedAccount.id);
         await brAccount.update({
           actor: null,
           id: updatedAccount.id,

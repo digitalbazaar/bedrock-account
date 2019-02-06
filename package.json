@@ -34,5 +34,8 @@
   },
   "directories": {
     "lib": "./lib"
+  },
+  "devDependencies": {
+    "eslint-config-digitalbazaar": "^1.4.0"
   }
 }
