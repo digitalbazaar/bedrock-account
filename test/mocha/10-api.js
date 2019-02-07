@@ -422,10 +422,12 @@ describe('bedrock-account', () => {
           [newAccount.id]);
         testRole(
           meta.sysResourceRole[1], 'bedrock-account.beta',
-          [newAccount.id]);
+          [newAccount.id]
+        );
         testRole(
           meta.sysResourceRole[2], 'bedrock-account.gamma',
-          [newAccount.id]);
+          [newAccount.id]
+        );
         account.should.be.an('object');
         account.id.should.equal(newAccount.id);
         account.email.should.equal(email);
@@ -576,6 +578,82 @@ describe('bedrock-account', () => {
           should.exist(e);
           e.name.should.contain('InvalidStateError');
           e.message.should.contain('sequence');
+        }
+      });
+      it('should throw invalid path', async () => {
+        const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          actor: null,
+          account: newAccount,
+          meta: {
+            sysResourceRole: [{
+              sysRole: 'bedrock-account.regular',
+              generateResource: 'id'
+            }]
+          }
+        });
+        const actor = await brAccount.getCapabilities({id: newAccount.id});
+        const updatedAccount = newRecord.account;
+        const observer = jsonpatch.observe(updatedAccount);
+        updatedAccount.email = 'UPDATED.' + email;
+        const updates = jsonpatch.generate(observer);
+        jsonpatch.unobserve(updatedAccount, observer);
+        const patch = updates.map(p => {
+          p.path = '/invalid/path/object';
+          return p;
+        });
+        try {
+          await brAccount.update({
+            actor,
+            id: updatedAccount.id,
+            patch,
+            sequence: 0
+          });
+          should.exist(undefined, 'update did not throw an error');
+        } catch(e) {
+          should.exist(e);
+          e.name.should.contain('ValidationError');
+          e.message.should.match(/patch\s+is\s+invalid/);
+        }
+      });
+      it('should not allow id operations', async () => {
+        const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          actor: null,
+          account: newAccount,
+          meta: {
+            sysResourceRole: [{
+              sysRole: 'bedrock-account.regular',
+              generateResource: 'id'
+            }]
+          }
+        });
+        const actor = await brAccount.getCapabilities({id: newAccount.id});
+        const updatedAccount = newRecord.account;
+        const observer = jsonpatch.observe(updatedAccount);
+        updatedAccount.email = 'UPDATED.' + email;
+        const updates = jsonpatch.generate(observer);
+        jsonpatch.unobserve(updatedAccount, observer);
+        const patch = updates.map(p => {
+          p.path = '/id';
+          return p;
+        });
+        try {
+          await brAccount.update({
+            actor,
+            id: updatedAccount.id,
+            patch,
+            sequence: 0
+          });
+          should.exist(undefined, 'update did not throw an error');
+        } catch(e) {
+          console.log(e, e.name, e.message);
+          should.exist(e);
+          e.name.should.contain('ValidationError');
+          e.message.should.match(/patch\s+is\s+invalid/i);
+          e.details.errors.message.should.match(/can\s+not\s+change\s+id/i);
         }
       });
 
