@@ -1,5 +1,11 @@
 # bedrock-account ChangeLog
 
+## 2.1.1 -
+
+### Changed
+- Fixed issue https://github.com/digitalbazaar/bedrock-account/issues/7
+- Added eslint-config-digitalbazaar to project with .eslintrc.js
+
 ## 2.1.0 - 2018-11-28
 
 ### Changed
