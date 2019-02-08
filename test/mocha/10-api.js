@@ -547,7 +547,7 @@ describe('bedrock-account', () => {
         should.exist(err);
         err.name.should.equal('PermissionDenied');
       });
-      it('should throw Record sequence does not match.', async () => {
+      it('should throw record sequence does not match.', async () => {
         const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
         const newAccount = helpers.createAccount(email);
         const newRecord = await brAccount.insert({
