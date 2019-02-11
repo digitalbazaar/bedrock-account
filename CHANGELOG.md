@@ -1,10 +1,11 @@
 # bedrock-account ChangeLog
 
-## 2.1.1 -
+## 2.1.1 - 2019-02-11
 
 ### Changed
-- Fixed issue https://github.com/digitalbazaar/bedrock-account/issues/7
-- Added eslint-config-digitalbazaar to project with .eslintrc.js
+- Fixed error handling related to an invalid sequence on updates.  
+  See [issue #7](https://github.com/digitalbazaar/bedrock-account/issues/7).
+- Added eslint-config-digitalbazaar to project with `.eslintrc.js` file.
 
 ## 2.1.0 - 2018-11-28
 
