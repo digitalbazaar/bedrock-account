@@ -651,7 +651,7 @@ describe('bedrock-account', () => {
           should.exist(e);
           e.name.should.contain('ValidationError');
           e.message.should.match(/patch\s+is\s+invalid/i);
-          e.details.errors.message.should.match(/can\s+not\s+change\s+id/i);
+          e.details.errors.message.should.equal('"id" cannot be changed');
         }
       });
 
