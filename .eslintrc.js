@@ -1,7 +1,10 @@
 module.exports = {
-  "env": {
-    "es6": true,
-    "node": true
+  env: {
+    es6: true,
+    node: true
   },
-  "extends": "eslint-config-digitalbazaar",
+  extends: [
+    'eslint-config-digitalbazaar',
+    'eslint-config-digitalbazaar/jsdoc'
+  ]
 };
