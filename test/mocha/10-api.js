@@ -639,20 +639,23 @@ describe('bedrock-account', () => {
           p.path = '/id';
           return p;
         });
+        let result;
+        let error;
         try {
-          await brAccount.update({
+          result = await brAccount.update({
             actor,
             id: updatedAccount.id,
             patch,
             sequence: 0
           });
-          should.exist(undefined, 'update did not throw an error');
         } catch(e) {
-          should.exist(e);
-          e.name.should.contain('ValidationError');
-          e.message.should.match(/patch\s+is\s+invalid/i);
-          e.details.errors.message.should.equal('"id" cannot be changed');
+          error = e;
         }
+        should.not.exist(result);
+        should.exist(error);
+        error.name.should.contain('ValidationError');
+        error.message.should.match(/patch\s+is\s+invalid/i);
+        error.details.errors.message.should.contain('"id" cannot be changed');
       });
 
     });
