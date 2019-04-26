@@ -3,7 +3,10 @@
   "version": "2.1.2-0",
   "description": "User accounts for Bedrock applications",
   "main": "./lib",
-  "scripts": {},
+  "scripts": {
+    "generate-readme": "jsdoc2md -t readme-template.hbs lib/*.js > README.md",
+    "lint": "eslint lib"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/digitalbazaar/bedrock-account"
@@ -38,6 +41,7 @@
   "devDependencies": {
     "eslint": "^5.15.3",
     "eslint-config-digitalbazaar": "^2.0.0",
-    "eslint-plugin-jsdoc": "^4.6.0"
+    "eslint-plugin-jsdoc": "^4.6.0",
+    "jsdoc-to-markdown": "^4.0.1"
   }
 }
