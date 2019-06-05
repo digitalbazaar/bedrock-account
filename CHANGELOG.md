@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 2.1.2 - 2019-06-xx
+
+### Fixed
+- Only disallow patching `id` on account, not other paths.
+
 ## 2.1.1 - 2019-02-11
 
 ### Changed
