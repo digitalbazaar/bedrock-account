@@ -30,19 +30,19 @@
     "lodash": "^4.17.10"
   },
   "peerDependencies": {
-    "bedrock": "^1.12.1",
-    "bedrock-identity": "^6.0.0",
+    "bedrock": "1.12.1 - 3.x",
+    "bedrock-identity": "6.0.0 - 7.x",
     "bedrock-permission": "^2.5.0",
-    "bedrock-mongodb": "3.x - 5.x",
+    "bedrock-mongodb": "3.x - 6.x",
     "bedrock-validation": "^4.0.0"
   },
   "directories": {
     "lib": "./lib"
   },
   "devDependencies": {
-    "eslint": "^5.15.3",
-    "eslint-config-digitalbazaar": "^2.0.0",
-    "eslint-plugin-jsdoc": "^4.6.0",
+    "eslint": "^6.6.0",
+    "eslint-config-digitalbazaar": "^2.0.1",
+    "eslint-plugin-jsdoc": "^17.1.1",
     "jsdoc-to-markdown": "^4.0.1"
   }
 }
