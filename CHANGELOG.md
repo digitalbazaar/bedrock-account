@@ -1,5 +1,8 @@
 # bedrock-account ChangeLog
 
+### Changed
+- Update dependencies.
+
 ## 2.1.2 - 2019-06-05
 
 ### Fixed
