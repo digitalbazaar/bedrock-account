@@ -1,5 +1,7 @@
 # bedrock-account ChangeLog
 
+## 2.1.3 - 2019-11-13
+
 ### Changed
 - Update dependencies.
 
