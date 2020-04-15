@@ -1,11 +1,12 @@
+*.lcov
 *.log
-*.py[co]
 *.sw[nop]
 *~
+.nyc_output
 .project
 .settings
+.vscode
 TAGS
-bower_components
 coverage
 node_modules
 reports

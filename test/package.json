@@ -3,35 +3,31 @@
   "version": "0.0.1-0",
   "description": "Bedrock account test",
   "private": true,
-  "main": "./lib",
   "scripts": {
-    "test": "node --preserve-symlinks test.js test"
+    "test": "node --preserve-symlinks test.js test",
+    "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",
+    "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=text-lcov npm test > coverage.lcov",
+    "coverage-report": "nyc report"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/digitalbazaar/bedrock-account"
-  },
-  "keywords": [
-    "bedrock"
-  ],
-  "author": {
-    "name": "Digital Bazaar, Inc.",
-    "email": "support@digitalbazaar.com",
-    "url": "http://digitalbazaar.com"
-  },
-  "bugs": {
-    "url": "https://github.com/digitalbazaar/bedrock-account/issues"
-  },
-  "homepage": "https://github.com/digitalbazaar/bedrock-account",
   "dependencies": {
     "bedrock": "^3.0.1",
     "bedrock-account": "file:..",
     "bedrock-identity": "^7.0.0",
     "bedrock-mongodb": "^6.0.2",
     "bedrock-permission": "^2.5.0",
-    "bedrock-test": "^4.0.2",
+    "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.0.0",
+    "cross-env": "^7.0.2",
     "fast-json-patch": "^2.0.6",
-    "uuid": "^3.2.1"
+    "nyc": "^15.0.1"
+  },
+  "nyc": {
+    "excludeNodeModules": false,
+    "include": [
+      "node_modules/bedrock-account/**"
+    ],
+    "exclude": [
+      "node_modules/bedrock-account/node_modules/**"
+    ]
   }
 }

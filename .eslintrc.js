@@ -6,5 +6,6 @@ module.exports = {
   extends: [
     'eslint-config-digitalbazaar',
     'eslint-config-digitalbazaar/jsdoc'
-  ]
+  ],
+  ignorePatterns: ['node_modules/']
 };

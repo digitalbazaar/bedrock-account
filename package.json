@@ -6,7 +6,7 @@
   "main": "./lib",
   "scripts": {
     "generate-readme": "jsdoc2md -t readme-template.hbs lib/*.js > README.md",
-    "lint": "eslint lib"
+    "lint": "eslint lib schemas test"
   },
   "repository": {
     "type": "git",
