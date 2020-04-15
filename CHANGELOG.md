@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 2.2.0 - 2020-04-15
+
+### Changed
+- Setup CI and coverage workflow.
+
 ## 2.1.3 - 2019-11-13
 
 ### Changed
@@ -13,7 +18,7 @@
 ## 2.1.1 - 2019-02-11
 
 ### Changed
-- Fixed error handling related to an invalid sequence on updates.  
+- Fixed error handling related to an invalid sequence on updates.
   See [issue #7](https://github.com/digitalbazaar/bedrock-account/issues/7).
 - Added eslint-config-digitalbazaar to project with `.eslintrc.js` file.
 
