@@ -12,9 +12,9 @@
   "dependencies": {
     "bedrock": "^3.0.1",
     "bedrock-account": "file:..",
-    "bedrock-identity": "^7.0.0",
-    "bedrock-mongodb": "^6.0.2",
-    "bedrock-permission": "^2.5.0",
+    "bedrock-identity": "digitalbazaar/bedrock-identity#mongo-version-3",
+    "bedrock-mongodb": "digitalbazaar/bedrock-mongodb#driver3",
+    "bedrock-permission": "digitalbazaar/bedrock-permission#mongo-version-3",
     "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.0.0",
     "cross-env": "^7.0.2",
