@@ -1,5 +1,16 @@
 # bedrock-account ChangeLog
 
+## 3.0.0 -
+
+### Changed
+- **BREAKING**: Update `bedrock-mongodb` to ^7.0.0.
+- Change mongo API calls to mongo driver 3.5.
+- Parameter field to method find defaults to undefined.
+
+### Added
+- Find can take options.projections instead of fields.
+- Find will throw if both options.projectsion & fields are defined.
+
 ## 2.2.0 - 2020-04-15
 
 ### Changed
