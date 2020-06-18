@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 3.0.1 - 2020-06-18
+
+### Fixed
+- Fix validation of account data in the `update` API.
+
 ## 3.0.0 - 2020-06-09
 
 ### Changed
