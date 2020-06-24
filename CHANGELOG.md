@@ -1,5 +1,11 @@
 # bedrock-account ChangeLog
 
+## 4.0.0 - 2020-06-24
+
+### Changed
+- **BREAKING**: Remove dependency on bedrock-identity.
+- **BREAKING**: Remove legacy callback APIs.
+
 ## 3.0.1 - 2020-06-18
 
 ### Fixed
