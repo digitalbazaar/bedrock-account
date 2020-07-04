@@ -12,7 +12,7 @@
   "dependencies": {
     "bedrock": "^3.0.1",
     "bedrock-account": "file:..",
-    "bedrock-mongodb": "^7.0.0",
+    "bedrock-mongodb": "^7.1.0",
     "bedrock-permission": "^3.0.0",
     "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.0.0",

@@ -168,10 +168,13 @@ describe('bedrock-account', () => {
           id: account.id
         });
         should.exist(record);
+        record.should.be.an('object');
+        // this ensure only the 2 properties specified in projection
+        // are returned not _id
+        Object.keys(record).should.deep.equal(['meta', 'account']);
         record.account.should.be.an('object');
         record.meta.should.be.an('object');
         record.meta.status.should.equal('deleted');
-
         await brAccount.setStatus({
           actor: null,
           id: account.id,
@@ -188,6 +191,10 @@ describe('bedrock-account', () => {
           id: account.id
         });
         should.exist(record);
+        record.should.be.an('object');
+        // this ensure only the 2 properties specified in projection
+        // are returned not _id
+        Object.keys(record).should.deep.equal(['meta', 'account']);
         record.account.id.should.equal(account.id);
         record.account.email.should.equal(account.email);
         record.meta.status.should.equal('active');
@@ -219,6 +226,10 @@ describe('bedrock-account', () => {
           id: account.id
         });
         should.exist(record);
+        record.should.be.an('object');
+        // this ensure only the 2 properties specified in projection
+        // are returned not _id
+        Object.keys(record).should.deep.equal(['meta', 'account']);
         record.account.id.should.equal(account.id);
         record.account.email.should.equal(account.email);
         record.meta.status.should.equal('active');
@@ -230,6 +241,10 @@ describe('bedrock-account', () => {
           actor,
           id: account.id
         });
+        record.should.be.an('object');
+        // this ensure only the 2 properties specified in projection
+        // are returned not _id
+        Object.keys(record).should.deep.equal(['meta', 'account']);
         should.exist(record);
         record.account.id.should.equal(account.id);
         record.account.email.should.equal(account.email);
