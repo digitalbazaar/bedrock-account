@@ -33,7 +33,7 @@
     "bedrock": "1.12.1 - 3.x",
     "bedrock-permission": "^3.0.0",
     "bedrock-mongodb": "^7.1.0",
-    "bedrock-validation": "^4.0.0"
+    "bedrock-validation": "^4.4.0"
   },
   "directories": {
     "lib": "./lib"
