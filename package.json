@@ -1,6 +1,6 @@
 {
   "name": "bedrock-account",
-  "version": "4.1.0",
+  "version": "4.1.1-0",
   "description": "User accounts for Bedrock applications",
   "license": "SEE LICENSE IN LICENSE.md",
   "main": "./lib",
