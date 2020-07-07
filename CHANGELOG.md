@@ -1,5 +1,13 @@
 # bedrock-account ChangeLog
 
+## 4.1.0 - 2020-07-07
+
+### Changed
+- Update peer deps, test deps and CI workflow.
+
+### Fixed
+- Fix usage of the MongoDB projection API.
+
 ## 4.0.0 - 2020-06-24
 
 ### Changed
