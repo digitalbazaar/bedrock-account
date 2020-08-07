@@ -297,6 +297,27 @@ describe('bedrock-account', () => {
         should.exist(err);
         err.name.should.equal('DuplicateError');
       });
+      it('should return error on duplicate email', async () => {
+        const email = '4c38d01c-d8fb-11ea-87d0-0242ac130003@example.com';
+        const newAccount = helpers.createAccount(email);
+        await brAccount.insert({
+          actor: null,
+          account: newAccount
+        });
+        // attempt to make another account with the same email
+        const newAccount2 = helpers.createAccount(email);
+        let err;
+        try {
+          await brAccount.insert({
+            actor: null,
+            account: newAccount2
+          });
+        } catch(e) {
+          err = e;
+        }
+        should.exist(err);
+        err.name.should.equal('DuplicateError');
+      });
       it('should properly generate a resource ID for one role', async () => {
         const email = '15065125-6e65-4f2e-9736-bb49aee468a4@example.com';
         const newAccount = helpers.createAccount(email);
@@ -594,7 +615,7 @@ describe('bedrock-account', () => {
         }
       });
       it('should throw invalid path', async () => {
-        const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
+        const email = 'b4952586-d8f9-11ea-87d0-0242ac130003@example.com';
         const newAccount = helpers.createAccount(email);
         const newRecord = await brAccount.insert({
           actor: null,
@@ -631,7 +652,7 @@ describe('bedrock-account', () => {
         }
       });
       it('should not allow id operations', async () => {
-        const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
+        const email = 'd3ae77a6-d8f9-11ea-87d0-0242ac130003@example.com';
         const newAccount = helpers.createAccount(email);
         const newRecord = await brAccount.insert({
           actor: null,
@@ -678,7 +699,7 @@ describe('bedrock-account', () => {
   describe('updateRoles API', () => {
     describe('null actor', () => {
       it('should allow updates to capabilities', async () => {
-        const regular = '9930e2f4-6b59-11e8-9457-9f540c45ea21@example.com';
+        const regular = '19101afc-d8fa-11ea-87d0-0242ac130003@example.com';
         const regularAccount = helpers.createAccount(regular);
 
         await brAccount.insert({
