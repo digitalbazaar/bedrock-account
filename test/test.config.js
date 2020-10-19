@@ -15,7 +15,6 @@ config.mocha.tests.push(path.join(__dirname, 'mocha'));
 config.mongodb.name = 'bedrock_account_test';
 config.mongodb.host = 'localhost';
 config.mongodb.port = 27017;
-config.mongodb.local.collection = 'bedrock_account_test';
 // drop all collections on initialization
 config.mongodb.dropCollections = {};
 config.mongodb.dropCollections.onInit = true;
@@ -43,4 +42,3 @@ roles['bedrock-account.admin'] = {
     permissions.ACCOUNT_META_UPDATE.id
   ]
 };
-
