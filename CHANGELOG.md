@@ -1,5 +1,11 @@
 # bedrock-account ChangeLog
 
+## 4.2.0 - 2020-10-20
+
+### Changed
+- Update peer and test deps.
+- Regenerate readme.
+
 ## 4.1.0 - 2020-07-07
 
 ### Changed
