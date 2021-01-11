@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 5.0.0 - 2020-TBD
+## 5.0.0 - 2021-01-11
 
 ### Changed
 - **BREAKING**: One email can have only one account.
