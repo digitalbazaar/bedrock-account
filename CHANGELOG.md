@@ -3,7 +3,7 @@
 ## 5.0.0 - 2021-01-11
 
 ### Changed
-- **BREAKING**: One email can have only one account.
+- **BREAKING**: An email can have only one account linked to it.
 
 ## 4.2.0 - 2020-10-20
 
