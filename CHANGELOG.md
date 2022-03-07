@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 6.0.0 - 2022-03-xx
+## 6.0.0 - 2022-03-07
 
 ### Changed
 - **BREAKING**: Remove deprecated `fields` option from `getAll`. Use
