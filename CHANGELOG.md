@@ -1,5 +1,21 @@
 # bedrock-account ChangeLog
 
+## 6.0.0 - 2022-03-xx
+
+### Changed
+- **BREAKING**: Remove deprecated `fields` option from `getAll`. Use
+  `options.projection` instead.
+- **BREAKING**: Update peer deps:
+  - `bedrock@4.4`
+  - `bedrock-validation@5.5`
+  - `bedrock-mongodb@8.4`
+
+### Removed
+- **BREAKING**: Remove all usage of `bedrock-permission` including
+  roles (e.g., `sysResourceRole`), `actor`, etc. All authz should
+  be managed via HTTP (or other) APIs and technologies such as
+  zcaps, meters, and oauth2.
+
 ## 5.0.0 - 2021-01-11
 
 ### Changed
