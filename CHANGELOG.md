@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 6.1.0 - 2022-03-xx
+## 6.1.0 - 2022-03-07
 
 ### Added
 - Add option to pass `email` to `get()`.
