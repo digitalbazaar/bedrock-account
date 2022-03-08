@@ -81,7 +81,7 @@ describe('bedrock-account', () => {
       record.meta.status.should.equal('deleted');
       await brAccount.setStatus({id: account.id, status: 'active'});
     });
-    it('should get existing account', async () => {
+    it('should get existing account by ID', async () => {
       const {account} = accounts['alpha@example.com'];
       const record = await brAccount.get({id: account.id});
       should.exist(record);
@@ -92,6 +92,42 @@ describe('bedrock-account', () => {
       record.account.id.should.equal(account.id);
       record.account.email.should.equal(account.email);
       record.meta.status.should.equal('active');
+    });
+    it('should get existing account by email', async () => {
+      const {account} = accounts['alpha@example.com'];
+      const record = await brAccount.get({email: account.email});
+      should.exist(record);
+      record.should.be.an('object');
+      // this ensure only the 2 properties specified in projection
+      // are returned not _id
+      Object.keys(record).should.deep.equal(['meta', 'account']);
+      record.account.id.should.equal(account.id);
+      record.account.email.should.equal(account.email);
+      record.meta.status.should.equal('active');
+    });
+    it('should get existing account by ID and email', async () => {
+      const {account} = accounts['alpha@example.com'];
+      const record = await brAccount.get(
+        {id: account.id, email: account.email});
+      should.exist(record);
+      record.should.be.an('object');
+      // this ensure only the 2 properties specified in projection
+      // are returned not _id
+      Object.keys(record).should.deep.equal(['meta', 'account']);
+      record.account.id.should.equal(account.id);
+      record.account.email.should.equal(account.email);
+      record.meta.status.should.equal('active');
+    });
+    it('should return error on non-matching ID and email', async () => {
+      const {account} = accounts['alpha@example.com'];
+      let err;
+      try {
+        await brAccount.get({id: account.id, email: 'nonmatch@test.example'});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      err.name.should.equal('NotFoundError');
     });
   }); // end get API
 
