@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 6.2.0 - 2022-03-xx
+## 6.2.0 - 2022-03-20
 
 ### Changed
 - Update internals to use esm style and use `esm.js` to
