@@ -1,9 +1,7 @@
 /*!
- * Copyright (c) 2018 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const bedrock = require('bedrock');
+import bedrock from 'bedrock';
 
 const schema = {
   title: 'User Account',
@@ -23,9 +21,9 @@ const schema = {
   additionalProperties: true
 };
 
-module.exports = function(extend) {
+export function createAccountSchema(extend) {
   if(extend) {
     return bedrock.util.extend(true, bedrock.util.clone(schema), extend);
   }
   return schema;
-};
+}

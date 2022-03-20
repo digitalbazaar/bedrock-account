@@ -1,5 +1,11 @@
 # bedrock-account ChangeLog
 
+## 6.2.0 - 2022-03-xx
+
+### Changed
+- Update internals to use esm style and use `esm.js` to
+  transpile to CommonJS.
+
 ## 6.1.0 - 2022-03-07
 
 ### Added
