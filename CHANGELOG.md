@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 6.3.1 - 2022-03-xx
+## 6.3.1 - 2022-03-23
 
 ### Fixed
 - Fix erroneous use of `exports`.
