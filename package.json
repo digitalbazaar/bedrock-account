@@ -30,7 +30,7 @@
     "fast-json-patch": "^3.1.0"
   },
   "peerDependencies": {
-    "bedrock": "^4.4.3",
+    "bedrock": "^4.5.0",
     "bedrock-mongodb": "^8.4.0",
     "bedrock-validation": "^5.5.0"
   },
