@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 6.3.0 - 2022-03-xx
+## 6.3.0 - 2022-03-23
 
 ### Changed
 - Update peer deps:
