@@ -10,7 +10,7 @@
     "coverage-report": "nyc report"
   },
   "dependencies": {
-    "bedrock": "^4.4.3",
+    "bedrock": "^4.5.0",
     "bedrock-account": "file:..",
     "bedrock-mongodb": "^8.4.0",
     "bedrock-test": "^6.0.0",
