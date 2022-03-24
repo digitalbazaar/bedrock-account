@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 6.3.2 - 2022-03-xx
+
+### Fixed
+- Fix `bedrock-mongodb` import.
+
 ## 6.3.1 - 2022-03-23
 
 ### Fixed
