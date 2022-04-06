@@ -1,19 +1,13 @@
-/*
+/*!
  * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
  */
-/* jshint node: true */
+import * as helpers from './helpers.js';
 
-'use strict';
+export const mockData = {};
 
-const helpers = require('./helpers');
+const accounts = mockData.accounts = {};
 
-const data = {};
-module.exports = data;
-
-const accounts = data.accounts = {};
-let email;
-
-email = 'will-be-deleted@example.com';
+let email = 'will-be-deleted@example.com';
 accounts[email] = {};
 accounts[email].account = helpers.createAccount(email);
 accounts[email].meta = {};
