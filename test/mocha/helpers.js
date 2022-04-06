@@ -1,39 +1,35 @@
-/*
+/*!
  * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
  */
-/* jshint node: true */
+import * as bedrock from '@bedrock/core';
+import * as brAccount from 'bedrock-account';
+import * as database from 'bedrock-mongodb';
 
-'use strict';
+const {util: {uuid}} = bedrock;
 
-const brAccount = require('bedrock-account');
-const database = require('bedrock-mongodb');
-const {util: {uuid}} = require('bedrock');
-
-const api = {};
-module.exports = api;
-
-api.createAccount = email => {
+export function createAccount(email) {
   const newAccount = {
     id: 'urn:uuid:' + uuid(),
     email
   };
   return newAccount;
-};
+}
 
-api.prepareDatabase = async mockData => {
+export async function prepareDatabase(mockData) {
   await api.removeCollections();
   await insertTestData(mockData);
-};
+}
 
-api.removeCollections = async (collectionNames = ['account']) => {
+export async function removeCollections(collectionNames = ['account']) {
   await database.openCollections(collectionNames);
   for(const collectionName of collectionNames) {
     await database.collections[collectionName].deleteMany({});
   }
-};
+}
 
-api.removeCollection =
-  async collectionName => api.removeCollections([collectionName]);
+export async function removeCollection(collectionName) {
+  return removeCollections([collectionName]);
+}
 
 async function insertTestData(mockData) {
   const records = Object.values(mockData.accounts);

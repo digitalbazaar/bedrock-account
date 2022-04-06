@@ -1,13 +1,12 @@
 /*!
  * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
+import * as brAccount from '@bedrock/account';
+import * as database from '@bedrock/mongodb';
+import * as helpers from './helpers.js';
+import jsonpatch from 'fast-json-patch';
+import {mockData} from './mock.data.js';
 
-const brAccount = require('bedrock-account');
-const database = require('bedrock-mongodb');
-const helpers = require('./helpers');
-const jsonpatch = require('fast-json-patch');
-const mockData = require('./mock.data');
 let accounts;
 
 describe('bedrock-account', () => {
