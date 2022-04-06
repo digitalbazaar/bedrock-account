@@ -2,8 +2,8 @@
  * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as bedrock from '@bedrock/core';
-import * as brAccount from 'bedrock-account';
-import * as database from 'bedrock-mongodb';
+import * as brAccount from '@bedrock/account';
+import * as database from '@bedrock/mongodb';
 
 const {util: {uuid}} = bedrock;
 
@@ -16,7 +16,7 @@ export function createAccount(email) {
 }
 
 export async function prepareDatabase(mockData) {
-  await api.removeCollections();
+  await removeCollections();
   await insertTestData(mockData);
 }
 
