@@ -1,9 +1,7 @@
 /*!
  * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
  */
-import * as bedrock from '@bedrock/core';
-
-const schema = {
+export const schema = {
   title: 'User Account',
   required: [
     'email',
@@ -20,10 +18,3 @@ const schema = {
   },
   additionalProperties: true
 };
-
-export function createAccountSchema(extend) {
-  if(extend) {
-    return bedrock.util.extend(true, bedrock.util.clone(schema), extend);
-  }
-  return schema;
-}
