@@ -1,5 +1,13 @@
 # bedrock-account ChangeLog
 
+## 8.0.0 - 2022-04-xx
+
+### Changed
+- **BREAKING**: Update peer deps:
+  - `@bedrock/core@6`
+  - `@bedrock/mongodb@10`
+  - `@bedrock/validation@7`.
+
 ## 7.0.0 - 2022-04-06
 
 ### Changed
