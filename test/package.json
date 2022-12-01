@@ -13,7 +13,7 @@
   "dependencies": {
     "@bedrock/account": "file:..",
     "@bedrock/core": "^6.0.0",
-    "@bedrock/mongodb": "^10.0.0",
+    "@bedrock/mongodb": "github:digitalbazaar/bedrock-mongodb#mongo-driver-4-rc-fix-duplicate-error",
     "@bedrock/test": "^8.0.0",
     "@bedrock/validation": "^7.0.0",
     "c8": "^7.11.0",
