@@ -128,6 +128,36 @@ describe('bedrock-account', () => {
       should.exist(err);
       err.name.should.equal('NotFoundError');
     });
+
+    describe('Indexes', async () => {
+      let accountId;
+      // NOTE: the accounts collection is getting erased before each test
+      // this allows for the creation of tokens using the same account info
+      beforeEach(async () => {
+        await helpers.prepareDatabase(mockData);
+        accountId = mockData.accounts['alpha@example.com'].account.id;
+      });
+      it(`is properly indexed for 'id'`, async () => {
+        const {
+          executionStats
+        } = await brAccount.get({id: accountId, explain: true});
+        executionStats.nReturned.should.equal(1);
+        executionStats.totalKeysExamined.should.equal(1);
+        executionStats.totalDocsExamined.should.equal(1);
+        executionStats.executionStages.inputStage.inputStage.inputStage.stage
+          .should.equal('IXSCAN');
+      });
+      it(`is properly indexed for 'account.email'`, async () => {
+        const {
+          executionStats
+        } = await brAccount.get({email: 'alpha@example.com', explain: true});
+        executionStats.nReturned.should.equal(1);
+        executionStats.totalKeysExamined.should.equal(1);
+        executionStats.totalDocsExamined.should.equal(1);
+        executionStats.executionStages.inputStage.inputStage.inputStage.stage
+          .should.equal('IXSCAN');
+      });
+    });
   }); // end get API
 
   describe('insert API', () => {
