@@ -352,6 +352,47 @@ describe('bedrock-account', () => {
         account.id.should.equal(newAccount.id);
         account.email.should.equal('UPDATED.' + email);
       });
+      it('should throw record sequence does not match', async () => {
+        const email = 'dfad8d2f-3320-4609-916a-db7c68dc9b8c@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          account: newAccount,
+          meta: {}
+        });
+        const updatedAccount = {...newRecord.account};
+        updatedAccount.email = 'UPDATED.' + email;
+        try {
+          await brAccount.update({
+            id: updatedAccount.id,
+            account: updatedAccount,
+            sequence: 99
+          });
+        } catch(e) {
+          should.exist(e);
+          e.name.should.contain('InvalidStateError');
+          e.message.should.contain('Sequence does not match');
+        }
+      });
+      it('should throw account does not exist', async () => {
+        const email = 'a51ef89c-cd5c-4e77-a56a-e35773a87d8c@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          account: newAccount,
+          meta: {}
+        });
+        const updatedAccount = {...newRecord.account};
+        updatedAccount.id = 'doesnotexist';
+        try {
+          await brAccount.update({
+            id: 'doesnotexist',
+            account: updatedAccount,
+            sequence: 0
+          });
+        } catch(e) {
+          should.exist(e);
+          e.name.should.contain('NotFoundError');
+        }
+      });
       it('should update an account without passing id', async () => {
         const email = 'b6bde968-29ab-4b7d-8731-e4c663396ad6@example.com';
         const newAccount = helpers.createAccount(email);
