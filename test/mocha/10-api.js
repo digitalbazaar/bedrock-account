@@ -211,118 +211,171 @@ describe('bedrock-account', () => {
   }); // end insert API
 
   describe('update API', () => {
-    it('should update an account', async () => {
-      const email = '388f3331-1015-4b2b-9ed2-f931fe53d074@example.com';
-      const newAccount = helpers.createAccount(email);
-      const newRecord = await brAccount.insert({account: newAccount});
-      const updatedAccount = newRecord.account;
-      const observer = jsonpatch.observe(updatedAccount);
-      updatedAccount.email = 'UPDATED.' + email;
-      const patch = jsonpatch.generate(observer);
-      jsonpatch.unobserve(updatedAccount, observer);
-      await brAccount.update({
-        id: updatedAccount.id,
-        patch,
-        sequence: 0
-      });
-      const updatedRecord = await database.collections.account.findOne(
-        {id: database.hash(newAccount.id)});
-      should.exist(updatedRecord);
-      const {account, meta} = updatedRecord;
-      meta.should.be.an('object');
-      should.exist(meta.created);
-      meta.created.should.be.a('number');
-      should.exist(meta.updated);
-      meta.updated.should.be.a('number');
-      meta.status.should.equal('active');
-      account.should.be.an('object');
-      account.id.should.equal(newAccount.id);
-      account.email.should.equal('UPDATED.' + email);
-    });
-    it('should throw record sequence does not match.', async () => {
-      const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
-      const newAccount = helpers.createAccount(email);
-      const newRecord = await brAccount.insert({
-        account: newAccount,
-        meta: {}
-      });
-      const updatedAccount = newRecord.account;
-      const observer = jsonpatch.observe(updatedAccount);
-      updatedAccount.email = 'UPDATED.' + email;
-      const patch = jsonpatch.generate(observer);
-      jsonpatch.unobserve(updatedAccount, observer);
-      try {
-        await brAccount.update({
-          id: updatedAccount.id,
-          patch,
-          sequence: 99
-        });
-      } catch(e) {
-        should.exist(e);
-        e.name.should.contain('InvalidStateError');
-        e.message.should.contain('sequence');
-      }
-    });
-    it('should throw invalid path', async () => {
-      const email = 'b4952586-d8f9-11ea-87d0-0242ac130003@example.com';
-      const newAccount = helpers.createAccount(email);
-      const newRecord = await brAccount.insert({
-        account: newAccount,
-        meta: {}
-      });
-      const updatedAccount = newRecord.account;
-      const observer = jsonpatch.observe(updatedAccount);
-      updatedAccount.email = 'UPDATED.' + email;
-      const updates = jsonpatch.generate(observer);
-      jsonpatch.unobserve(updatedAccount, observer);
-      const patch = updates.map(p => {
-        p.path = '/invalid/path/object';
-        return p;
-      });
-      try {
+    describe('patch', () => {
+      it('should update an account', async () => {
+        const email = '388f3331-1015-4b2b-9ed2-f931fe53d074@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({account: newAccount});
+        const updatedAccount = newRecord.account;
+        const observer = jsonpatch.observe(updatedAccount);
+        updatedAccount.email = 'UPDATED.' + email;
+        const patch = jsonpatch.generate(observer);
+        jsonpatch.unobserve(updatedAccount, observer);
         await brAccount.update({
           id: updatedAccount.id,
           patch,
           sequence: 0
         });
-      } catch(e) {
-        should.exist(e);
-        e.name.should.contain('ValidationError');
-        e.message.should.match(/patch\s+is\s+invalid/);
-      }
+        const updatedRecord = await database.collections.account.findOne(
+          {id: database.hash(newAccount.id)});
+        should.exist(updatedRecord);
+        const {account, meta} = updatedRecord;
+        meta.should.be.an('object');
+        should.exist(meta.created);
+        meta.created.should.be.a('number');
+        should.exist(meta.updated);
+        meta.updated.should.be.a('number');
+        meta.status.should.equal('active');
+        account.should.be.an('object');
+        account.id.should.equal(newAccount.id);
+        account.email.should.equal('UPDATED.' + email);
+      });
+      it('should throw record sequence does not match', async () => {
+        const email = '6e1e026d-a679-4714-aecd-9f948a3d19e7@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          account: newAccount,
+          meta: {}
+        });
+        const updatedAccount = newRecord.account;
+        const observer = jsonpatch.observe(updatedAccount);
+        updatedAccount.email = 'UPDATED.' + email;
+        const patch = jsonpatch.generate(observer);
+        jsonpatch.unobserve(updatedAccount, observer);
+        try {
+          await brAccount.update({
+            id: updatedAccount.id,
+            patch,
+            sequence: 99
+          });
+        } catch(e) {
+          should.exist(e);
+          e.name.should.contain('InvalidStateError');
+          e.message.should.contain('sequence');
+        }
+      });
+      it('should throw invalid path', async () => {
+        const email = 'b4952586-d8f9-11ea-87d0-0242ac130003@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          account: newAccount,
+          meta: {}
+        });
+        const updatedAccount = newRecord.account;
+        const observer = jsonpatch.observe(updatedAccount);
+        updatedAccount.email = 'UPDATED.' + email;
+        const updates = jsonpatch.generate(observer);
+        jsonpatch.unobserve(updatedAccount, observer);
+        const patch = updates.map(p => {
+          p.path = '/invalid/path/object';
+          return p;
+        });
+        try {
+          await brAccount.update({
+            id: updatedAccount.id,
+            patch,
+            sequence: 0
+          });
+        } catch(e) {
+          should.exist(e);
+          e.name.should.contain('ValidationError');
+          e.message.should.match(/patch\s+is\s+invalid/);
+        }
+      });
+      it('should not allow id operations', async () => {
+        const email = 'd3ae77a6-d8f9-11ea-87d0-0242ac130003@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          account: newAccount,
+          meta: {}
+        });
+        const updatedAccount = newRecord.account;
+        const observer = jsonpatch.observe(updatedAccount);
+        updatedAccount.email = 'UPDATED.' + email;
+        const updates = jsonpatch.generate(observer);
+        jsonpatch.unobserve(updatedAccount, observer);
+        const patch = updates.map(p => {
+          p.path = '/id';
+          return p;
+        });
+        let result;
+        let error;
+        try {
+          result = await brAccount.update({
+            id: updatedAccount.id,
+            patch,
+            sequence: 0
+          });
+        } catch(e) {
+          error = e;
+        }
+        should.not.exist(result);
+        should.exist(error);
+        error.name.should.contain('ValidationError');
+        error.message.should.match(/patch\s+is\s+invalid/i);
+        error.details.errors.message.should.contain('"id" cannot be changed');
+      });
     });
-    it('should not allow id operations', async () => {
-      const email = 'd3ae77a6-d8f9-11ea-87d0-0242ac130003@example.com';
-      const newAccount = helpers.createAccount(email);
-      const newRecord = await brAccount.insert({
-        account: newAccount,
-        meta: {}
-      });
-      const updatedAccount = newRecord.account;
-      const observer = jsonpatch.observe(updatedAccount);
-      updatedAccount.email = 'UPDATED.' + email;
-      const updates = jsonpatch.generate(observer);
-      jsonpatch.unobserve(updatedAccount, observer);
-      const patch = updates.map(p => {
-        p.path = '/id';
-        return p;
-      });
-      let result;
-      let error;
-      try {
-        result = await brAccount.update({
-          id: updatedAccount.id,
-          patch,
+    describe('overwrite', () => {
+      it('should update an account', async () => {
+        const email = 'b6bde968-29ab-4b7d-8731-e4c663396ad6@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({account: newAccount});
+        const updatedAccount = {...newRecord.account};
+        updatedAccount.email = 'UPDATED.' + email;
+        await brAccount.update({
+          account: updatedAccount,
           sequence: 0
         });
-      } catch(e) {
-        error = e;
-      }
-      should.not.exist(result);
-      should.exist(error);
-      error.name.should.contain('ValidationError');
-      error.message.should.match(/patch\s+is\s+invalid/i);
-      error.details.errors.message.should.contain('"id" cannot be changed');
+        const updatedRecord = await database.collections.account.findOne(
+          {id: database.hash(newAccount.id)});
+        should.exist(updatedRecord);
+        const {account, meta} = updatedRecord;
+        meta.should.be.an('object');
+        should.exist(meta.created);
+        meta.created.should.be.a('number');
+        should.exist(meta.updated);
+        meta.updated.should.be.a('number');
+        meta.status.should.equal('active');
+        account.should.be.an('object');
+        account.id.should.equal(newAccount.id);
+        account.email.should.equal('UPDATED.' + email);
+      });
+      it('should not allow id operations', async () => {
+        const email = 'af12fba9-02e9-4178-aadb-169e4c501cbd@example.com';
+        const newAccount = helpers.createAccount(email);
+        const newRecord = await brAccount.insert({
+          account: newAccount,
+          meta: {}
+        });
+        const updatedAccount = {...newRecord.account};
+        updatedAccount.id = 'UPDATED.' + updatedAccount.id;
+        let result;
+        let error;
+        try {
+          result = await brAccount.update({
+            id: newRecord.account.id,
+            account: updatedAccount,
+            sequence: 0
+          });
+        } catch(e) {
+          error = e;
+        }
+        should.not.exist(result);
+        should.exist(error);
+        error.name.should.equal('TypeError');
+        error.message.should.include('"id" must equal "account.id".');
+      });
     });
   });
 
