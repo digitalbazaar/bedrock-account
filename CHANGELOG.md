@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 8.1.0 - 2022-12-dd
+
+### Added
+- Add optional `explain` flag to `get()`.
+
 ## 8.0.0 - 2022-04-29
 
 ### Changed
