@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 8.2.0 - 2022-12-dd
+## 8.2.0 - 2022-12-11
 
 ### Added
 - Add overwrite feature to `update`. Instead of using a
