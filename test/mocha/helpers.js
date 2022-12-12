@@ -18,7 +18,9 @@ export async function prepareDatabase(mockData) {
   await insertTestData(mockData);
 }
 
-export async function removeCollections(collectionNames = ['account']) {
+export async function removeCollections(collectionNames = [
+  'account', 'account-email'
+]) {
   await database.openCollections(collectionNames);
   for(const collectionName of collectionNames) {
     await database.collections[collectionName].deleteMany({});
