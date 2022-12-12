@@ -1,5 +1,13 @@
 # bedrock-account ChangeLog
 
+## 8.2.0 - 2022-12-dd
+
+### Added
+- Add overwrite feature to `update`. Instead of using a
+  JSON `patch`, the `account` and / or `meta` fields in
+  an account record can be overwritten, provided that the
+  sequence matches.
+
 ## 8.1.0 - 2022-12-11
 
 ### Added
