@@ -28,7 +28,8 @@
   "dependencies": {
     "assert-plus": "^1.0.0",
     "fast-json-patch": "^3.1.1",
-    "klona": "^2.0.5"
+    "klona": "^2.0.5",
+    "uuid": "^9.0.0"
   },
   "peerDependencies": {
     "@bedrock/core": "^6.0.0",
