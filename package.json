@@ -40,7 +40,7 @@
     "lib": "./lib"
   },
   "devDependencies": {
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "eslint-config-digitalbazaar": "^4.2.0",
     "eslint-plugin-jsdoc": "^39.6.4",
     "jsdoc-to-markdown": "^8.0.0"
