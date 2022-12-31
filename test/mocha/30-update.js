@@ -171,7 +171,7 @@ describe('update', () => {
       } catch(e) {
         should.exist(e);
         e.name.should.contain('InvalidStateError');
-        e.message.should.contain('Sequence does not match');
+        e.message.should.contain('sequence does not match');
       }
     });
     it('should throw account does not exist', async () => {
