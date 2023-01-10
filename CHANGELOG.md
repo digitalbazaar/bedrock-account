@@ -1,5 +1,14 @@
 # bedrock-account ChangeLog
 
+## 9.0.0 -
+
+### Changed
+- **BREAKING**: Upgrade to `@bedrock/mongodb: ^11`.
+- **BREAKING**: Change use of results to match Node Mongo Driver 4.
+
+### Removed
+- Remove deprecated mongo index `background`.
+
 ## 8.0.0 - 2022-04-29
 
 ### Changed
