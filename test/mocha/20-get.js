@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as helpers from './helpers.js';
@@ -7,13 +7,13 @@ import {mockData} from './mock.data.js';
 
 let accounts;
 
-describe('get', () => {
+describe.only('get', () => {
   before(async () => {
     await helpers.prepareDatabase(mockData);
     accounts = mockData.accounts;
   });
 
-  it('should return error on non-existent account', async () => {
+  it('throws error on non-existent account', async () => {
     let err;
     try {
       await brAccount.get({id: 'urn:uuid:nobody'});
@@ -24,46 +24,46 @@ describe('get', () => {
     err.name.should.equal('NotFoundError');
   });
   it('returns account when active option is not specified', async () => {
+    // should get account even if status is `deleted`
     const {account} = accounts['will-be-deleted@example.com'];
-
     await brAccount.setStatus({id: account.id, status: 'deleted'});
-
+    console.log('******** GETTING', account.id);
     const record = await brAccount.get({id: account.id});
     should.exist(record);
     record.should.be.an('object');
     // this ensure only the 2 properties specified in projection
     // are returned not _id
-    Object.keys(record).should.deep.equal(['meta', 'account']);
+    record.should.have.keys(['account', 'meta']);
     record.account.should.be.an('object');
     record.meta.should.be.an('object');
     record.meta.status.should.equal('deleted');
     await brAccount.setStatus({id: account.id, status: 'active'});
   });
-  it('should get existing account by ID', async () => {
+  it('gets existing account by ID', async () => {
     const {account} = accounts['alpha@example.com'];
     const record = await brAccount.get({id: account.id});
     should.exist(record);
     record.should.be.an('object');
     // this ensure only the 2 properties specified in projection
     // are returned not _id
-    Object.keys(record).should.deep.equal(['meta', 'account']);
+    record.should.have.keys(['account', 'meta']);
     record.account.id.should.equal(account.id);
     record.account.email.should.equal(account.email);
     record.meta.status.should.equal('active');
   });
-  it('should get existing account by email', async () => {
+  it('gets existing account by email', async () => {
     const {account} = accounts['alpha@example.com'];
     const record = await brAccount.get({email: account.email});
     should.exist(record);
     record.should.be.an('object');
     // this ensure only the 2 properties specified in projection
     // are returned not _id
-    Object.keys(record).should.deep.equal(['meta', 'account']);
+    record.should.have.keys(['account', 'meta']);
     record.account.id.should.equal(account.id);
     record.account.email.should.equal(account.email);
     record.meta.status.should.equal('active');
   });
-  it('should get existing account by ID and email', async () => {
+  it('gets existing account by ID and email', async () => {
     const {account} = accounts['alpha@example.com'];
     const record = await brAccount.get(
       {id: account.id, email: account.email});
@@ -71,12 +71,12 @@ describe('get', () => {
     record.should.be.an('object');
     // this ensure only the 2 properties specified in projection
     // are returned not _id
-    Object.keys(record).should.deep.equal(['meta', 'account']);
+    record.should.have.keys(['account', 'meta']);
     record.account.id.should.equal(account.id);
     record.account.email.should.equal(account.email);
     record.meta.status.should.equal('active');
   });
-  it('should return error on non-matching ID and email', async () => {
+  it('throws error on non-matching ID and email', async () => {
     const {account} = accounts['alpha@example.com'];
     let err;
     try {
