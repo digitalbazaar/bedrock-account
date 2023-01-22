@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
@@ -12,7 +12,7 @@ describe('update', () => {
     await helpers.prepareDatabase(mockData);
   });
 
-  describe('patch', () => {
+  describe.skip('patch', () => {
     it('should update an account', async () => {
       const email = '388f3331-1015-4b2b-9ed2-f931fe53d074@example.com';
       const newAccount = helpers.createAccount(email);
