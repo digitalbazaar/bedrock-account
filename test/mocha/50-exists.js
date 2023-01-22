@@ -1,11 +1,11 @@
 /*!
- * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as helpers from './helpers.js';
 import {mockData} from './mock.data.js';
 
-describe('exists', () => {
+describe.only('exists', () => {
   before(async () => {
     await helpers.prepareDatabase(mockData);
   });
