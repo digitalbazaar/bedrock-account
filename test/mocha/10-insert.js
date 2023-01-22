@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
@@ -11,12 +11,13 @@ describe('insert', () => {
     await helpers.prepareDatabase(mockData);
   });
 
-  it('should insert an account', async () => {
+  it.only('should insert an account', async () => {
     const email = 'de3c2700-0c5d-4b75-bd6b-02dee985e39d@example.com';
     const newAccount = helpers.createAccount(email);
     await brAccount.insert({account: newAccount});
     const record = await database.collections.account.findOne(
-      {id: database.hash(newAccount.id)});
+      {'account.id': newAccount.id});
+    console.log('new record id', newAccount.id);
     should.exist(record);
     const {account, meta} = record;
     meta.should.be.an('object');

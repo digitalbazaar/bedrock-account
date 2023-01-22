@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
@@ -7,7 +7,7 @@ import {v4 as uuid} from 'uuid';
 
 export function createAccount(email) {
   const newAccount = {
-    id: 'urn:uuid:' + uuid(),
+    id: `urn:uuid:${uuid()}`,
     email
   };
   return newAccount;
