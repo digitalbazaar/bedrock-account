@@ -38,7 +38,7 @@ describe.only('update', () => {
     account.email.should.equal(email);
     account.foo.should.equal('bar');
   });
-  it.only('should update with a new email', async () => {
+  it('should update with a new email', async () => {
     const email = '3b763b42-890b-4189-9075-b2d81b193d92@example.com';
     const newAccount = helpers.createAccount(email);
     const newRecord = await brAccount.insert({account: newAccount});
