@@ -6,7 +6,7 @@ import * as database from '@bedrock/mongodb';
 import * as helpers from './helpers.js';
 import {mockData} from './mock.data.js';
 
-describe.only('update', () => {
+describe('update', () => {
   before(async () => {
     await helpers.prepareDatabase(mockData);
   });
