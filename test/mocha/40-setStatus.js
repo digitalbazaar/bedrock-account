@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
@@ -8,19 +8,19 @@ import {mockData} from './mock.data.js';
 
 let accounts;
 
-describe('setStatus', () => {
+describe.only('setStatus', () => {
   before(async () => {
     await helpers.prepareDatabase(mockData);
     accounts = mockData.accounts;
   });
 
-  it('should mark an account deleted, then active', async () => {
+  it('marks an account deleted, then active', async () => {
     const {account} = accounts['will-be-deleted@example.com'];
     await brAccount.setStatus({id: account.id, status: 'deleted'});
 
     // check status is deleted
     let record = await database.collections.account.findOne({
-      id: database.hash(account.id)
+      'account.id': account.id
     });
     should.exist(record.account);
     should.exist(record.meta);
@@ -31,13 +31,13 @@ describe('setStatus', () => {
 
     // check status is active
     record = await database.collections.account.findOne({
-      id: database.hash(account.id)
+      'account.id': account.id
     });
     should.exist(record.account);
     should.exist(record.meta);
     record.meta.status.should.equal('active');
   });
-  it('returns error on a non-existent account', async () => {
+  it('throws error on a non-existent account', async () => {
     const id = 'urn:uuid:nobody';
     let err;
     try {

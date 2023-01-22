@@ -7,7 +7,7 @@ import {mockData} from './mock.data.js';
 
 let accounts;
 
-describe.only('get', () => {
+describe('get', () => {
   before(async () => {
     await helpers.prepareDatabase(mockData);
     accounts = mockData.accounts;
