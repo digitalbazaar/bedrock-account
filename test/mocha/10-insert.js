@@ -6,12 +6,12 @@ import * as database from '@bedrock/mongodb';
 import * as helpers from './helpers.js';
 import {mockData} from './mock.data.js';
 
-describe('insert', () => {
+describe.only('insert', () => {
   before(async () => {
     await helpers.prepareDatabase(mockData);
   });
 
-  it.only('should insert an account', async () => {
+  it('should insert an account', async () => {
     const email = 'de3c2700-0c5d-4b75-bd6b-02dee985e39d@example.com';
     const newAccount = helpers.createAccount(email);
     await brAccount.insert({account: newAccount});
@@ -32,7 +32,7 @@ describe('insert', () => {
     account.id.should.equal(newAccount.id);
     account.email.should.equal(email);
   });
-  it('should return error on duplicate account', async () => {
+  it('should throw error on duplicate account', async () => {
     const email = '99748241-3599-41a0-8445-d092de558b9f@example.com';
     const newAccount = helpers.createAccount(email);
     await brAccount.insert({account: newAccount});
@@ -46,7 +46,7 @@ describe('insert', () => {
     should.exist(err);
     err.name.should.equal('DuplicateError');
   });
-  it('should return error on duplicate email', async () => {
+  it('should throw error on duplicate email', async () => {
     const email = '4c38d01c-d8fb-11ea-87d0-0242ac130003@example.com';
     const newAccount = helpers.createAccount(email);
     await brAccount.insert({account: newAccount});
