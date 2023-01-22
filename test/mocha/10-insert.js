@@ -26,6 +26,8 @@ describe('insert', () => {
     should.exist(meta.updated);
     meta.updated.should.be.a('number');
     meta.status.should.equal('active');
+    should.exist(meta.sequence);
+    meta.sequence.should.equal(0);
     account.should.be.an('object');
     account.id.should.equal(newAccount.id);
     account.email.should.equal(email);
