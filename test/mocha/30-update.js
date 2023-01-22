@@ -11,7 +11,7 @@ describe.only('update', () => {
     await helpers.prepareDatabase(mockData);
   });
 
-  it.only('should update a non-email field', async () => {
+  it('should update a non-email field', async () => {
     const email = 'fccc2710-6785-4131-8b78-b07da4be53f2@example.com';
     const newAccount = helpers.createAccount(email);
     const newRecord = await brAccount.insert({account: newAccount});
@@ -38,7 +38,7 @@ describe.only('update', () => {
     account.email.should.equal(email);
     account.foo.should.equal('bar');
   });
-  it('should update with a new email', async () => {
+  it.only('should update with a new email', async () => {
     const email = '3b763b42-890b-4189-9075-b2d81b193d92@example.com';
     const newAccount = helpers.createAccount(email);
     const newRecord = await brAccount.insert({account: newAccount});
@@ -50,7 +50,7 @@ describe.only('update', () => {
       sequence: 0
     });
     const updatedRecord = await database.collections.account.findOne(
-      {id: database.hash(newAccount.id)});
+      {'account.id': newAccount.id});
     should.exist(updatedRecord);
     updatedRecord.should.have.keys('_id', 'account', 'meta');
     const {account, meta} = updatedRecord;
@@ -77,7 +77,7 @@ describe.only('update', () => {
       sequence: 0
     });
     const updatedRecord = await database.collections.account.findOne(
-      {id: database.hash(newAccount.id)});
+      {'account.id': newAccount.id});
     should.exist(updatedRecord);
     updatedRecord.should.have.keys('_id', 'account', 'meta');
     const {account, meta} = updatedRecord;
@@ -144,7 +144,7 @@ describe.only('update', () => {
       sequence: 0
     });
     const updatedRecord = await database.collections.account.findOne(
-      {id: database.hash(newAccount.id)});
+      {'account.id': newAccount.id});
     should.exist(updatedRecord);
     updatedRecord.should.have.keys('_id', 'account', 'meta');
     const {account, meta} = updatedRecord;
@@ -177,7 +177,7 @@ describe.only('update', () => {
       sequence: 0
     });
     const updatedRecord = await database.collections.account.findOne(
-      {id: database.hash(newAccount.id)});
+      {'account.id': newAccount.id});
     should.exist(updatedRecord);
     updatedRecord.should.have.keys('_id', 'account', 'meta');
     const {account, meta} = updatedRecord;
@@ -211,7 +211,7 @@ describe.only('update', () => {
       }
     });
     const updatedRecord = await database.collections.account.findOne(
-      {id: database.hash(newAccount.id)});
+      {'account.id': newAccount.id});
     should.exist(updatedRecord);
     updatedRecord.should.have.keys('_id', 'account', 'meta');
     const {account, meta} = updatedRecord;
@@ -247,7 +247,7 @@ describe.only('update', () => {
       }
     });
     const updatedRecord = await database.collections.account.findOne(
-      {id: database.hash(newAccount.id)});
+      {'account.id': newAccount.id});
     should.exist(updatedRecord);
     updatedRecord.should.have.keys('_id', 'account', 'meta');
     const {account, meta} = updatedRecord;
