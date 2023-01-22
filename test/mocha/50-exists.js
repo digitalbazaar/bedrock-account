@@ -5,7 +5,7 @@ import * as brAccount from '@bedrock/account';
 import * as helpers from './helpers.js';
 import {mockData} from './mock.data.js';
 
-describe.only('exists', () => {
+describe('exists', () => {
   before(async () => {
     await helpers.prepareDatabase(mockData);
   });
