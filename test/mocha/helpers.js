@@ -13,6 +13,20 @@ export function createAccount(email) {
   return newAccount;
 }
 
+export async function createFailedTransaction({
+  accountId, type, _pending
+} = {}) {
+  const query = {'account.id': accountId};
+  const update = {
+    $set: {_txn: {id: uuid(), type, recordId: accountId}}
+  };
+  if(_pending !== undefined) {
+    update.$set._pending = _pending;
+  }
+  const result = await database.collections.account.updateOne(query, update);
+  result.result.n.should.equal(1);
+}
+
 export async function prepareDatabase(mockData) {
   await removeCollections();
   await insertTestData(mockData);
