@@ -27,7 +27,6 @@ describe('get', () => {
     // should get account even if status is `deleted`
     const {account} = accounts['will-be-deleted@example.com'];
     await brAccount.setStatus({id: account.id, status: 'deleted'});
-    console.log('******** GETTING', account.id);
     const record = await brAccount.get({id: account.id});
     should.exist(record);
     record.should.be.an('object');
