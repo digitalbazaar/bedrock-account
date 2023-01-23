@@ -53,7 +53,7 @@ describe('setStatus', () => {
     const {account} = accounts['will-be-deleted@example.com'];
 
     // simulate failed transaction
-    await helpers.createFailedTransaction(
+    await helpers.createFakeTransaction(
       {accountId: account.id, type: 'update'});
 
     await brAccount.setStatus({id: account.id, status: 'deleted'});
