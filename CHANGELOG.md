@@ -1,5 +1,18 @@
 # bedrock-account ChangeLog
 
+## 9.0.0 - 2023-01-dd
+
+### Changed
+- **BREAKING**: The database record and layout for this module has changed in
+  ways that incompatible with any previous releases. Now the uniqueness
+  constraint for account email addresses is enforced via a proxy collection
+  and an internal transaction system. This enables the account collection (and
+  the proxy collection) to be sharded.
+
+### Removed
+- **BREAKING**: The `patch` feature in the update API has been removed. Only
+  overwrite w/sequence matching is permitted.
+
 ## 8.2.0 - 2022-12-11
 
 ### Added
