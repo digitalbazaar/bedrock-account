@@ -13,18 +13,40 @@ export function createAccount(email) {
   return newAccount;
 }
 
-export async function createFailedTransaction({
-  accountId, type, _pending
+export async function createFakeTransaction({
+  accountId, type, committed, _pending, ops = [], skipAccountRecord = false
 } = {}) {
-  const query = {'account.id': accountId};
-  const update = {
-    $set: {_txn: {id: uuid(), type, recordId: accountId}}
-  };
-  if(_pending !== undefined) {
-    update.$set._pending = _pending;
+  const txn = {id: uuid(), type, recordId: accountId};
+  if(committed) {
+    txn.committed = true;
   }
-  const result = await database.collections.account.updateOne(query, update);
-  result.result.n.should.equal(1);
+
+  if(!skipAccountRecord) {
+    const query = {'account.id': accountId};
+    const update = {$set: {_txn: txn}};
+    if(_pending !== undefined) {
+      update.$set._pending = _pending;
+    }
+    const result = await database.collections.account.updateOne(
+      query, update, {upsert: true});
+    result.result.n.should.equal(1);
+  }
+
+  for(const op of ops) {
+    const _txn = {...txn, op: op.type};
+    if(op.type === 'insert') {
+      const query = {email: op.email};
+      const update = {$set: {accountId, email: op.email, _txn}};
+      await database.collections['account-email'].updateOne(
+        query, update, {upsert: true});
+    } else {
+      const query = {email: op.email};
+      const update = {$set: {_txn}};
+      const result = await database.collections['account-email'].updateOne(
+        query, update, {upsert: true});
+      result.result.n.should.equal(1);
+    }
+  }
 }
 
 export async function prepareDatabase(mockData) {

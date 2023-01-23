@@ -317,7 +317,7 @@ describe('update', () => {
       const newRecord = await brAccount.insert({account: newAccount});
 
       // simulate failed transaction
-      await helpers.createFailedTransaction(
+      await helpers.createFakeTransaction(
         {accountId: newAccount.id, type: 'update'});
 
       const updatedAccount = {...newRecord.account};
@@ -362,7 +362,7 @@ describe('update', () => {
       const newRecord = await brAccount.insert({account: newAccount});
 
       // simulate failed transaction
-      await helpers.createFailedTransaction({
+      await helpers.createFakeTransaction({
         accountId: newAccount.id, type: 'update',
         ops: [
           {type: 'insert', email: 'failedchanged@example.com'},
@@ -416,7 +416,7 @@ describe('update', () => {
 
       // simulate failed transaction
       const failedInsertId = 'acf8342e-09b8-4d2a-adaf-0c14c2a65086';
-      await helpers.createFailedTransaction({
+      await helpers.createFakeTransaction({
         accountId: failedInsertId,
         type: 'insert',
         ops: [
@@ -470,7 +470,7 @@ describe('update', () => {
 
       // simulate failed transaction
       const failedInsertId = '67b6786b-427f-4c83-8f84-66693ca6aaf4';
-      await helpers.createFailedTransaction({
+      await helpers.createFakeTransaction({
         accountId: failedInsertId,
         type: 'insert',
         ops: [
@@ -512,8 +512,7 @@ describe('update', () => {
       proxyRecord2.accountId.should.equal(newAccount.id);
       proxyRecord2.email.should.equal('UPDATED.' + email);
     });
-    it(
-      'should throw duplicate error with rolled back update txn w/proxy op',
+    it('should throw duplicate error with rolled back update txn w/proxy op',
       async () => {
         // this test simulates a stalled update transaction that was rolled
         // back by another process but still wrote a delete proxy op; that
@@ -531,7 +530,7 @@ describe('update', () => {
         await brAccount.insert({account: failedUpdateAccount});
 
         // simulate failed transaction
-        await helpers.createFailedTransaction({
+        await helpers.createFakeTransaction({
           accountId: failedUpdateAccount.id,
           type: 'update',
           ops: [
