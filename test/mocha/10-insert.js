@@ -17,7 +17,6 @@ describe('insert', () => {
     await brAccount.insert({account: newAccount});
     const record = await database.collections.account.findOne(
       {'account.id': newAccount.id});
-    console.log('new record id', newAccount.id);
     should.exist(record);
     const {account, meta} = record;
     meta.should.be.an('object');
@@ -93,7 +92,6 @@ describe('insert', () => {
       await brAccount.insert({account: newAccount});
       const record = await database.collections.account.findOne(
         {'account.id': newAccount.id});
-      console.log('new record id', newAccount.id);
       should.exist(record);
       const {account, meta} = record;
       meta.should.be.an('object');
@@ -139,7 +137,6 @@ describe('insert', () => {
       await brAccount.insert({account: newAccount});
       const record = await database.collections.account.findOne(
         {'account.id': newAccount.id});
-      console.log('new record id', newAccount.id);
       should.exist(record);
       const {account, meta} = record;
       meta.should.be.an('object');
