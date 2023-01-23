@@ -61,4 +61,8 @@ describe('insert', () => {
     should.exist(err);
     err.name.should.equal('DuplicateError');
   });
+  // FIXME: add test that continues interrupted `insert` and produces
+  // a duplicate error
+  // FIXME: add test that rolls back interrupted `insert` and performs new
+  // insert
 });

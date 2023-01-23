@@ -14,7 +14,7 @@ describe('setStatus', () => {
     accounts = mockData.accounts;
   });
 
-  it('marks an account deleted, then active', async () => {
+  it('marks account deleted, then active', async () => {
     const {account} = accounts['will-be-deleted@example.com'];
     await brAccount.setStatus({id: account.id, status: 'deleted'});
 
@@ -48,5 +48,33 @@ describe('setStatus', () => {
     should.exist(err);
     err.name.should.equal('NotFoundError');
     err.details.account.should.equal(id);
+  });
+  it('marks account deleted after a failed txn and then active', async () => {
+    const {account} = accounts['will-be-deleted@example.com'];
+
+    // simulate failed transaction
+    await helpers.createFailedTransaction(
+      {accountId: account.id, type: 'update'});
+
+    await brAccount.setStatus({id: account.id, status: 'deleted'});
+
+    // check status is deleted
+    let record = await database.collections.account.findOne({
+      'account.id': account.id
+    });
+    should.exist(record.account);
+    should.exist(record.meta);
+    record.meta.status.should.equal('deleted');
+
+    // reactivate account
+    await brAccount.setStatus({id: account.id, status: 'active'});
+
+    // check status is active
+    record = await database.collections.account.findOne({
+      'account.id': account.id
+    });
+    should.exist(record.account);
+    should.exist(record.meta);
+    record.meta.status.should.equal('active');
   });
 });
