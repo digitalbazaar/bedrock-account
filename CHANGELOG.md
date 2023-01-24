@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 9.0.0 - 2023-01-dd
+## 9.0.0 - 2023-01-24
 
 ### Changed
 - **BREAKING**: The database record and layout for this module has changed in
