@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 9.1.0 - 2024-10-dd
+
+### Changed
+- Update dependencies.
+
 ## 9.0.0 - 2023-01-24
 
 ### Changed
