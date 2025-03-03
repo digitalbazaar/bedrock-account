@@ -1,5 +1,11 @@
 # bedrock-account ChangeLog
 
+## 9.1.1 - 2025-mm-dd
+
+### Fixed
+- Return passed `record` instead of resulting record from mongodb calls to
+  enable using newer mongodb driver.
+
 ## 9.1.0 - 2024-10-15
 
 ### Changed
