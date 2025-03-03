@@ -5,6 +5,7 @@
 ### Fixed
 - Return passed `record` instead of resulting record from mongodb calls to
   enable using newer mongodb driver.
+- Use `result.modifiedCount`, etc. to enable newer mongodb driver.
 
 ## 9.1.0 - 2024-10-15
 

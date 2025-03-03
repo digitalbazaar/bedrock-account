@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2024 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2025 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
@@ -29,7 +29,7 @@ export async function createFakeTransaction({
     }
     const result = await database.collections.account.updateOne(
       query, update, {upsert: true});
-    result.result.n.should.equal(1);
+    (result.modifiedCount + result.upsertedCount).should.equal(1);
   }
 
   for(const op of ops) {
@@ -44,7 +44,7 @@ export async function createFakeTransaction({
       const update = {$set: {_txn}};
       const result = await database.collections['account-email'].updateOne(
         query, update, {upsert: true});
-      result.result.n.should.equal(1);
+      (result.modifiedCount + result.upsertedCount).should.equal(1);
     }
   }
 }
