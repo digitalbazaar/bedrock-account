@@ -1,5 +1,17 @@
 # bedrock-account ChangeLog
 
+## 10.0.0 - 2025-03-xx
+
+### Changed
+- Update peer dependencies.
+  - `@bedrock/core@6.3.0`.
+  - **BREAKING**: `@bedrock/mongodb@11`.
+    - Use MongoDB driver 6.x and update error names and details.
+    - See changelog for details.
+  - `@bedrock/validation@7.1.1`.
+- Update dev dependencies.
+- Update test dependencies.
+
 ## 9.1.1 - 2025-03-04
 
 ### Fixed
