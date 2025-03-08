@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 10.0.0 - 2025-03-xx
+## 10.0.0 - 2025-03-07
 
 ### Changed
 - Update peer dependencies.
