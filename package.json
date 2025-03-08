@@ -29,17 +29,17 @@
     "assert-plus": "^1.0.0"
   },
   "peerDependencies": {
-    "@bedrock/core": "^6.0.0",
-    "@bedrock/mongodb": "^10.0.0",
-    "@bedrock/validation": "^7.0.0"
+    "@bedrock/core": "^6.3.0",
+    "@bedrock/mongodb": "^11.0.0",
+    "@bedrock/validation": "^7.1.1"
   },
   "directories": {
     "lib": "./lib"
   },
   "devDependencies": {
-    "eslint": "^8.30.0",
+    "eslint": "^8.57.1",
     "eslint-config-digitalbazaar": "^5.2.0",
-    "eslint-plugin-jsdoc": "^50.4.1",
-    "jsdoc-to-markdown": "^9.0.2"
+    "eslint-plugin-jsdoc": "^50.6.3",
+    "jsdoc-to-markdown": "^9.1.1"
   }
 }
