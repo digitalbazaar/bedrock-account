@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 10.0.1 - 20xx-xx-xx
+
+### Changed
+- Add module linting.
+
 ## 10.0.0 - 2025-03-07
 
 ### Changed
