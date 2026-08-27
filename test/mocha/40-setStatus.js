@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2026 Digital Bazaar, Inc.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
