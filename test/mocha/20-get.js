@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as helpers from './helpers.js';
@@ -86,6 +86,21 @@ describe('get', () => {
     should.exist(err);
     err.name.should.equal('NotFoundError');
   });
+  it('does not drop an empty unique field from the lookup', async () => {
+    // an empty identifier must not resolve the account by `id` alone; a
+    // consumer pairing the two is checking ownership
+    const {account} = accounts['alpha@example.com'];
+    for(const empty of [{email: ''}, {phoneNumber: ''}]) {
+      let err;
+      try {
+        await brAccount.get({id: account.id, ...empty});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      err.name.should.equal('NotFoundError');
+    }
+  });
 
   describe('indexes', () => {
     let accountId;
@@ -115,5 +130,32 @@ describe('get', () => {
       executionStats.executionStages.inputStage.inputStage.inputStage.stage
         .should.equal('IXSCAN');
     });
+  });
+
+  it('returns the account when looked up by phone number', async () => {
+    const phoneNumber = '+15550000201';
+    const newAccount = helpers.createAccount(undefined, {phoneNumber});
+    await brAccount.insert({account: newAccount});
+    const record = await brAccount.get({phoneNumber});
+    should.exist(record);
+    record.account.id.should.equal(newAccount.id);
+    record.account.phoneNumber.should.equal(phoneNumber);
+  });
+  it('throws error on non-existent phone number', async () => {
+    /* Insert a different phone number first, so the index is populated and a
+    NotFoundError means "not this number" rather than "nothing was queried" --
+    an unused selector raises the same error. */
+    await brAccount.insert({
+      account: helpers.createAccount(undefined, {phoneNumber: '+15550000298'})
+    });
+    let err;
+    try {
+      await brAccount.get({phoneNumber: '+15550000299'});
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('NotFoundError');
+    err.details.phoneNumber.should.equal('+15550000299');
   });
 });

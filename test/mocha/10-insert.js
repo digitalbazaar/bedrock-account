@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
@@ -67,6 +67,67 @@ describe('insert', () => {
     }
     should.exist(err);
     err.name.should.equal('DuplicateError');
+  });
+
+  it('inserts an account identified only by a phone number', async () => {
+    const phoneNumber = '+15550000101';
+    const newAccount = helpers.createAccount(undefined, {phoneNumber});
+    await brAccount.insert({account: newAccount});
+
+    const record = await database.collections.account.findOne(
+      {'account.id': newAccount.id});
+    should.exist(record);
+    record.account.phoneNumber.should.equal(phoneNumber);
+    should.not.exist(record.account.email);
+
+    const proxyRecord = await database.collections['account-phoneNumber']
+      .findOne({phoneNumber});
+    should.exist(proxyRecord);
+    proxyRecord.should.have.keys(['_id', 'accountId', 'phoneNumber']);
+    proxyRecord.accountId.should.equal(newAccount.id);
+
+    const emailProxyRecord = await database.collections['account-email']
+      .findOne({accountId: newAccount.id});
+    should.not.exist(emailProxyRecord);
+  });
+  it('inserts an account with both an email and a phone number', async () => {
+    const email = 'both-identifiers@example.com';
+    const phoneNumber = '+15550000102';
+    const newAccount = helpers.createAccount(email, {phoneNumber});
+    await brAccount.insert({account: newAccount});
+
+    const record = await database.collections.account.findOne(
+      {'account.id': newAccount.id});
+    should.exist(record);
+    record.account.email.should.equal(email);
+    record.account.phoneNumber.should.equal(phoneNumber);
+
+    for(const [field, value] of [['email', email],
+      ['phoneNumber', phoneNumber]]) {
+      const proxyRecord = await database.collections[`account-${field}`]
+        .findOne({[field]: value});
+      should.exist(proxyRecord);
+      proxyRecord.accountId.should.equal(newAccount.id);
+    }
+  });
+  it('throws error on duplicate phone number', async () => {
+    const phoneNumber = '+15550000103';
+    await brAccount.insert({
+      account: helpers.createAccount(undefined, {phoneNumber})
+    });
+    // attempt to make another account with the same phone number
+    let err;
+    try {
+      await brAccount.insert({
+        account: helpers.createAccount(undefined, {phoneNumber})
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('DuplicateError');
+    err.details.uniqueField.should.equal('phoneNumber');
+    err.details.uniqueValue.should.equal(phoneNumber);
   });
 
   describe('transactions', () => {

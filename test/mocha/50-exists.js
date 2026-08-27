@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as helpers from './helpers.js';
@@ -38,5 +38,45 @@ describe('exists', () => {
     const exists = await brAccount.exists(
       {id: newAccount.id, status: 'deleted'});
     exists.should.be.true;
+  });
+
+  it('returns true if an account with the phone number exists', async () => {
+    const phoneNumber = '+15550000301';
+    const newAccount = helpers.createAccount(undefined, {phoneNumber});
+    await brAccount.insert({account: newAccount});
+    const exists = await brAccount.exists({phoneNumber});
+    exists.should.be.true;
+  });
+  it('returns false if no account has the phone number', async () => {
+    const exists = await brAccount.exists({phoneNumber: '+15550000399'});
+    exists.should.be.false;
+  });
+
+  it('refuses a lookup naming a null email alongside a phone number',
+    async () => {
+      // only `undefined` means absent; a null or empty identifier is a value
+      // the lookup must honour, or a caller pairing two fields to check
+      // ownership loses the constraint by submitting a blank one
+      let err;
+      try {
+        await brAccount.exists({email: null, phoneNumber: '+15550000401'});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      err.message.should.match(/only one of/i);
+    });
+
+  it('refuses a lookup naming both an email and a phone number', async () => {
+    let err;
+    try {
+      await brAccount.exists({
+        email: 'both@example.com', phoneNumber: '+15550000402'
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.message.should.match(/only one of/i);
   });
 });
