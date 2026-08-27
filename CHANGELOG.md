@@ -1,5 +1,18 @@
 # bedrock-account ChangeLog
 
+## 10.1.0 - 2026-mm-dd
+
+### Added
+- Support `telephone` as an account identifier alongside `email`. It is a
+  unique field, so `get()` and `exists()` accept it and a duplicate is
+  rejected the same way a duplicate email is. An account may carry either
+  identifier or both. A lookup naming both is rejected: `get()` and `exists()`
+  throw, because a proxy collection answers one field at a time and preferring
+  one would return the wrong account to a caller whose two values disagree.
+- Export `UNIQUE_FIELDS`, the account fields that identify an account on their
+  own (`email`, `telephone`). Each has a proxy collection named
+  `account-<field>`.
+
 ## 10.0.1 - 2026-11-07
 
 ### Changed
