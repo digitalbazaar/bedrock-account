@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as helpers from './helpers.js';
@@ -112,8 +112,12 @@ describe('get', () => {
       executionStats.nReturned.should.equal(1);
       executionStats.totalKeysExamined.should.equal(1);
       executionStats.totalDocsExamined.should.equal(1);
-      executionStats.executionStages.inputStage.inputStage.inputStage.stage
-        .should.equal('IXSCAN');
+      // MongoDB 8.3+ answers this lookup with a single EXPRESS_IXSCAN stage
+      let stage = executionStats.executionStages;
+      while(stage.inputStage) {
+        stage = stage.inputStage;
+      }
+      ['IXSCAN', 'EXPRESS_IXSCAN'].should.include(stage.stage);
     });
   });
 });
