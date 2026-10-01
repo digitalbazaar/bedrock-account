@@ -5,15 +5,15 @@ import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
 import {randomUUID} from 'node:crypto';
 
-export function createAccount(email, {phoneNumber} = {}) {
+export function createAccount(email, {telephone} = {}) {
   const newAccount = {
     id: `urn:uuid:${randomUUID()}`
   };
   if(email !== undefined) {
     newAccount.email = email;
   }
-  if(phoneNumber !== undefined) {
-    newAccount.phoneNumber = phoneNumber;
+  if(telephone !== undefined) {
+    newAccount.telephone = telephone;
   }
   return newAccount;
 }

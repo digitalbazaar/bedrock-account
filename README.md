@@ -52,7 +52,7 @@ Inserts a new account. The account must contain `id`.
 <a name="module_bedrock-account.exists"></a>
 
 ### bedrock-account.exists(options) ⇒ <code>Promise</code>
-Check for the existence of an account. Naming both an email and a phone
+Check for the existence of an account. Naming both an email and a telephone
 number throws; a lookup resolves one unique field at a time.
 
 **Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
@@ -63,14 +63,14 @@ number throws; a lookup resolves one unique field at a time.
 | options | <code>object</code> |  | The options to use. |
 | [options.id] | <code>string</code> |  | The ID of the account to check. |
 | [options.email] | <code>string</code> |  | The email address for the account. |
-| [options.phoneNumber] | <code>string</code> |  | The phone number for the account. |
+| [options.telephone] | <code>string</code> |  | The telephone number for the account. |
 | [options.status] | <code>string</code> | <code>&quot;active&quot;</code> | The status to check for   (options: 'active', deleted'). |
 
 <a name="module_bedrock-account.get"></a>
 
 ### bedrock-account.get(options) ⇒ <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject)
-Retrieves an account by ID, email, or phone number. Naming both an email
-and a phone number throws; a lookup resolves one unique field at a time.
+Retrieves an account by ID, email, or telephone number. Naming both an email
+and a telephone number throws; a lookup resolves one unique field at a time.
 
 **Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
 **Returns**: <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject) - - Returns a Promise that resolves to
@@ -82,7 +82,7 @@ and a phone number throws; a lookup resolves one unique field at a time.
 | options | <code>object</code> |  | The options to use. |
 | [options.id] | <code>string</code> |  | The ID of the account to retrieve. |
 | [options.email] | <code>string</code> |  | The email of the account to retrieve. |
-| [options.phoneNumber] | <code>string</code> |  | The phone number of the account to   retrieve. |
+| [options.telephone] | <code>string</code> |  | The telephone number of the account to   retrieve. |
 | [options.explain] | <code>boolean</code> | <code>false</code> | An optional explain boolean. |
 
 <a name="module_bedrock-account.getAll"></a>

@@ -69,65 +69,65 @@ describe('insert', () => {
     err.name.should.equal('DuplicateError');
   });
 
-  it('inserts an account identified only by a phone number', async () => {
-    const phoneNumber = '+15550000101';
-    const newAccount = helpers.createAccount(undefined, {phoneNumber});
+  it('inserts an account identified only by a telephone number', async () => {
+    const telephone = '+15550000101';
+    const newAccount = helpers.createAccount(undefined, {telephone});
     await brAccount.insert({account: newAccount});
 
     const record = await database.collections.account.findOne(
       {'account.id': newAccount.id});
     should.exist(record);
-    record.account.phoneNumber.should.equal(phoneNumber);
+    record.account.telephone.should.equal(telephone);
     should.not.exist(record.account.email);
 
-    const proxyRecord = await database.collections['account-phoneNumber']
-      .findOne({phoneNumber});
+    const proxyRecord = await database.collections['account-telephone']
+      .findOne({telephone});
     should.exist(proxyRecord);
-    proxyRecord.should.have.keys(['_id', 'accountId', 'phoneNumber']);
+    proxyRecord.should.have.keys(['_id', 'accountId', 'telephone']);
     proxyRecord.accountId.should.equal(newAccount.id);
 
     const emailProxyRecord = await database.collections['account-email']
       .findOne({accountId: newAccount.id});
     should.not.exist(emailProxyRecord);
   });
-  it('inserts an account with both an email and a phone number', async () => {
+  it('inserts an account with an email and a telephone number', async () => {
     const email = 'both-identifiers@example.com';
-    const phoneNumber = '+15550000102';
-    const newAccount = helpers.createAccount(email, {phoneNumber});
+    const telephone = '+15550000102';
+    const newAccount = helpers.createAccount(email, {telephone});
     await brAccount.insert({account: newAccount});
 
     const record = await database.collections.account.findOne(
       {'account.id': newAccount.id});
     should.exist(record);
     record.account.email.should.equal(email);
-    record.account.phoneNumber.should.equal(phoneNumber);
+    record.account.telephone.should.equal(telephone);
 
     for(const [field, value] of [['email', email],
-      ['phoneNumber', phoneNumber]]) {
+      ['telephone', telephone]]) {
       const proxyRecord = await database.collections[`account-${field}`]
         .findOne({[field]: value});
       should.exist(proxyRecord);
       proxyRecord.accountId.should.equal(newAccount.id);
     }
   });
-  it('throws error on duplicate phone number', async () => {
-    const phoneNumber = '+15550000103';
+  it('throws error on duplicate telephone number', async () => {
+    const telephone = '+15550000103';
     await brAccount.insert({
-      account: helpers.createAccount(undefined, {phoneNumber})
+      account: helpers.createAccount(undefined, {telephone})
     });
-    // attempt to make another account with the same phone number
+    // attempt to make another account with the same telephone number
     let err;
     try {
       await brAccount.insert({
-        account: helpers.createAccount(undefined, {phoneNumber})
+        account: helpers.createAccount(undefined, {telephone})
       });
     } catch(e) {
       err = e;
     }
     should.exist(err);
     err.name.should.equal('DuplicateError');
-    err.details.uniqueField.should.equal('phoneNumber');
-    err.details.uniqueValue.should.equal(phoneNumber);
+    err.details.uniqueField.should.equal('telephone');
+    err.details.uniqueValue.should.equal(telephone);
   });
 
   describe('transactions', () => {

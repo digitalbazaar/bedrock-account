@@ -90,7 +90,7 @@ describe('get', () => {
     // an empty identifier must not resolve the account by `id` alone; a
     // consumer pairing the two is checking ownership
     const {account} = accounts['alpha@example.com'];
-    for(const empty of [{email: ''}, {phoneNumber: ''}]) {
+    for(const empty of [{email: ''}, {telephone: ''}]) {
       let err;
       try {
         await brAccount.get({id: account.id, ...empty});
@@ -132,30 +132,30 @@ describe('get', () => {
     });
   });
 
-  it('returns the account when looked up by phone number', async () => {
-    const phoneNumber = '+15550000201';
-    const newAccount = helpers.createAccount(undefined, {phoneNumber});
+  it('returns the account when looked up by telephone number', async () => {
+    const telephone = '+15550000201';
+    const newAccount = helpers.createAccount(undefined, {telephone});
     await brAccount.insert({account: newAccount});
-    const record = await brAccount.get({phoneNumber});
+    const record = await brAccount.get({telephone});
     should.exist(record);
     record.account.id.should.equal(newAccount.id);
-    record.account.phoneNumber.should.equal(phoneNumber);
+    record.account.telephone.should.equal(telephone);
   });
-  it('throws error on non-existent phone number', async () => {
-    /* Insert a different phone number first, so the index is populated and a
-    NotFoundError means "not this number" rather than "nothing was queried" --
-    an unused selector raises the same error. */
+  it('throws error on non-existent telephone number', async () => {
+    /* Insert a different telephone number first, so the index is populated and
+       a NotFoundError means "not this number" rather than "nothing was
+       queried" -- an unused selector raises the same error. */
     await brAccount.insert({
-      account: helpers.createAccount(undefined, {phoneNumber: '+15550000298'})
+      account: helpers.createAccount(undefined, {telephone: '+15550000298'})
     });
     let err;
     try {
-      await brAccount.get({phoneNumber: '+15550000299'});
+      await brAccount.get({telephone: '+15550000299'});
     } catch(e) {
       err = e;
     }
     should.exist(err);
     err.name.should.equal('NotFoundError');
-    err.details.phoneNumber.should.equal('+15550000299');
+    err.details.telephone.should.equal('+15550000299');
   });
 });
