@@ -86,6 +86,21 @@ describe('get', () => {
     should.exist(err);
     err.name.should.equal('NotFoundError');
   });
+  it('does not drop an empty unique field from the lookup', async () => {
+    // an empty identifier must not resolve the account by `id` alone; a
+    // consumer pairing the two is checking ownership
+    const {account} = accounts['alpha@example.com'];
+    for(const empty of [{email: ''}, {telephone: ''}]) {
+      let err;
+      try {
+        await brAccount.get({id: account.id, ...empty});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      err.name.should.equal('NotFoundError');
+    }
+  });
 
   describe('indexes', () => {
     let accountId;
@@ -119,5 +134,32 @@ describe('get', () => {
       }
       ['IXSCAN', 'EXPRESS_IXSCAN'].should.include(stage.stage);
     });
+  });
+
+  it('returns the account when looked up by telephone number', async () => {
+    const telephone = '+15550000201';
+    const newAccount = helpers.createAccount(undefined, {telephone});
+    await brAccount.insert({account: newAccount});
+    const record = await brAccount.get({telephone});
+    should.exist(record);
+    record.account.id.should.equal(newAccount.id);
+    record.account.telephone.should.equal(telephone);
+  });
+  it('throws error on non-existent telephone number', async () => {
+    /* Insert a different telephone number first, so the index is populated and
+       a NotFoundError means "not this number" rather than "nothing was
+       queried" -- an unused selector raises the same error. */
+    await brAccount.insert({
+      account: helpers.createAccount(undefined, {telephone: '+15550000298'})
+    });
+    let err;
+    try {
+      await brAccount.get({telephone: '+15550000299'});
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('NotFoundError');
+    err.details.telephone.should.equal('+15550000299');
   });
 });

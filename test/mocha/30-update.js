@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
@@ -577,5 +577,45 @@ describe('update', () => {
         proxyRecord.accountId.should.equal(failedUpdateAccount.id);
         proxyRecord.email.should.equal('UPDATED.' + email);
       });
+  });
+
+  it('adds a telephone number to an account that had none', async () => {
+    const email = 'add-a-telephone@example.com';
+    const telephone = '+15550400001';
+    const newAccount = helpers.createAccount(email);
+    const record = await brAccount.insert({account: newAccount});
+    await brAccount.update({
+      id: newAccount.id,
+      account: {...record.account, telephone},
+      sequence: record.meta.sequence
+    });
+    const found = await brAccount.get({telephone});
+    found.account.id.should.equal(newAccount.id);
+    found.account.email.should.equal(email);
+  });
+
+  it('refuses a telephone number already used by another account', async () => {
+    const telephone = '+15550400002';
+    await brAccount.insert({
+      account: helpers.createAccount(undefined, {telephone})
+    });
+    const other = helpers.createAccount('other-account@example.com');
+    const record = await brAccount.insert({account: other});
+    let err;
+    try {
+      await brAccount.update({
+        id: other.id,
+        account: {...record.account, telephone},
+        sequence: record.meta.sequence
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('DuplicateError');
+    // pin it to the telephone index: routing telephone values into the email
+    // index would also collide here and pass
+    err.details.uniqueField.should.equal('telephone');
+    err.details.uniqueValue.should.equal(telephone);
   });
 });
