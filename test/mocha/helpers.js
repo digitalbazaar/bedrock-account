@@ -1,15 +1,20 @@
 /*!
- * Copyright (c) 2018-2025 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2026 Digital Bazaar, Inc. All rights reserved.
  */
 import * as brAccount from '@bedrock/account';
 import * as database from '@bedrock/mongodb';
 import {randomUUID} from 'node:crypto';
 
-export function createAccount(email) {
+export function createAccount(email, {telephone} = {}) {
   const newAccount = {
-    id: `urn:uuid:${randomUUID()}`,
-    email
+    id: `urn:uuid:${randomUUID()}`
   };
+  if(email !== undefined) {
+    newAccount.email = email;
+  }
+  if(telephone !== undefined) {
+    newAccount.telephone = telephone;
+  }
   return newAccount;
 }
 
@@ -54,9 +59,12 @@ export async function prepareDatabase(mockData) {
   await insertTestData(mockData);
 }
 
-export async function removeCollections(collectionNames = [
-  'account', 'account-email'
-]) {
+function accountCollections() {
+  return ['account', ...brAccount.UNIQUE_FIELDS.map(f => `account-${f}`)];
+}
+
+export async function removeCollections(
+  collectionNames = accountCollections()) {
   await database.openCollections(collectionNames);
   for(const collectionName of collectionNames) {
     await database.collections[collectionName].deleteMany({});
