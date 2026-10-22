@@ -52,21 +52,15 @@ describe('exists', () => {
     exists.should.be.false;
   });
 
-  it('refuses a lookup naming a null email alongside a telephone number',
-    async () => {
-      // only `undefined` means absent; a null or empty identifier is a value
-      // the lookup must honour, or a caller pairing two fields to check
-      // ownership loses the constraint by submitting a blank one
-      let err;
-      try {
-        await brAccount.exists({email: null, telephone: '+15550000401'});
-      } catch(e) {
-        err = e;
-      }
-      should.exist(err);
-      err.message.should.equal(
-        'Only one of "email" or "telephone" may be given.');
+  it('treats a null unique field as not given', async () => {
+    const telephone = '+15550000401';
+    const email = 'null-is-unset-exists@example.com';
+    await brAccount.insert({
+      account: helpers.createAccount(email, {telephone})
     });
+    (await brAccount.exists({email: null, telephone})).should.be.true;
+    (await brAccount.exists({email, telephone: null})).should.be.true;
+  });
 
   it('refuses a lookup naming both an email and a telephone number',
     async () => {

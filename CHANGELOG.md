@@ -15,6 +15,7 @@
 
 ### Changed
 - Add module linting.
+- Treat a `null` unique field (`email`, `telephone`) as not set, the same as `undefined`, in `get()`, `exists()`, `insert()` and `update()`. A `null` unique field no longer gets a proxy record or a lookup of its own.
 
 ### Fixed
 - Only emit a proxy operation for a unique field value that exists. An update

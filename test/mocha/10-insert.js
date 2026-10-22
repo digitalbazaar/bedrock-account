@@ -335,4 +335,17 @@ describe('insert', () => {
         proxyRecord.email.should.equal(email);
       });
   });
+
+  it('inserts accounts with a null unique field without a proxy record',
+    async () => {
+      const proxyCollection = database.collections['account-telephone'];
+      const before = await proxyCollection.countDocuments({});
+      for(const email of ['null-telephone-a@example.com',
+        'null-telephone-b@example.com']) {
+        await brAccount.insert({
+          account: {...helpers.createAccount(email), telephone: null}
+        });
+      }
+      (await proxyCollection.countDocuments({})).should.equal(before);
+    });
 });

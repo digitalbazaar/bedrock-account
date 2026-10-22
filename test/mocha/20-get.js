@@ -102,6 +102,17 @@ describe('get', () => {
     }
   });
 
+  it('treats a null unique field as not given', async () => {
+    const telephone = '+15550000202';
+    const email = 'null-is-unset-get@example.com';
+    const newAccount = helpers.createAccount(email, {telephone});
+    await brAccount.insert({account: newAccount});
+    for(const options of [{email: null, telephone}, {email, telephone: null}]) {
+      const record = await brAccount.get(options);
+      record.account.id.should.equal(newAccount.id);
+    }
+  });
+
   describe('indexes', () => {
     let accountId;
     // NOTE: the accounts collection is getting erased before each test

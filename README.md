@@ -53,7 +53,8 @@ Inserts a new account. The account must contain `id`.
 
 ### bedrock-account.exists(options) ⇒ <code>Promise</code>
 Check for the existence of an account. Naming both an email and a telephone
-number throws; a lookup resolves one unique field at a time.
+number throws; a lookup resolves one unique field at a time. A `null` unique
+field counts as not given, the same as `undefined`.
 
 **Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
 **Returns**: <code>Promise</code> - Resolves to a boolean indicating account existence.  
@@ -71,6 +72,7 @@ number throws; a lookup resolves one unique field at a time.
 ### bedrock-account.get(options) ⇒ <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject)
 Retrieves an account by ID, email, or telephone number. Naming both an email
 and a telephone number throws; a lookup resolves one unique field at a time.
+A `null` unique field counts as not given, the same as `undefined`.
 
 **Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
 **Returns**: <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject) - - Returns a Promise that resolves to
