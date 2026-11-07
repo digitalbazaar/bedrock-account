@@ -5,6 +5,10 @@
 ### Changed
 - Add module linting.
 
+### Fixed
+- Improve validation check to prohibit `null` values for optional parameters;
+  only `undefined` is permitted for omission.
+
 ## 10.0.0 - 2025-03-07
 
 ### Changed
