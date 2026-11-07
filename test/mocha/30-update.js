@@ -110,6 +110,120 @@ describe('update', () => {
     account.email.should.equal('UPDATED.' + email);
     account.foo.should.equal('bar');
   });
+  it('should update to remove email', async () => {
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const newAccount = helpers.createAccount(email);
+    const newRecord = await brAccount.insert({account: newAccount});
+    const updatedAccount = {...newRecord.account};
+    delete updatedAccount.email;
+    await brAccount.update({
+      id: newAccount.id,
+      account: updatedAccount,
+      sequence: 0
+    });
+    const updatedRecord = await database.collections.account.findOne(
+      {'account.id': newAccount.id});
+    should.exist(updatedRecord);
+    updatedRecord.should.have.keys('_id', 'account', 'meta');
+    const {account, meta} = updatedRecord;
+    meta.should.be.an('object');
+    should.exist(meta.created);
+    meta.created.should.be.a('number');
+    should.exist(meta.updated);
+    meta.updated.should.be.a('number');
+    meta.status.should.equal('active');
+    account.should.be.an('object');
+    account.id.should.equal(newAccount.id);
+    should.not.exist(account.email);
+  });
+  it('should update to remove email and another field', async () => {
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const newAccount = helpers.createAccount(email);
+    newAccount.foo = 'bar';
+    const newRecord = await brAccount.insert({account: newAccount});
+    newRecord.account.foo.should.equal('bar');
+    const updatedAccount = {...newRecord.account};
+    delete updatedAccount.email;
+    delete updatedAccount.foo;
+    await brAccount.update({
+      id: newAccount.id,
+      account: updatedAccount,
+      sequence: 0
+    });
+    const updatedRecord = await database.collections.account.findOne(
+      {'account.id': newAccount.id});
+    should.exist(updatedRecord);
+    updatedRecord.should.have.keys('_id', 'account', 'meta');
+    const {account, meta} = updatedRecord;
+    meta.should.be.an('object');
+    should.exist(meta.created);
+    meta.created.should.be.a('number');
+    should.exist(meta.updated);
+    meta.updated.should.be.a('number');
+    meta.status.should.equal('active');
+    account.should.be.an('object');
+    account.id.should.equal(newAccount.id);
+    should.not.exist(account.email);
+    should.not.exist(account.foo);
+  });
+  it('should update to add email', async () => {
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const newAccount = helpers.createAccount(email);
+    delete newAccount.email;
+    const newRecord = await brAccount.insert({account: newAccount});
+    should.not.exist(newRecord.account.email);
+    const updatedAccount = {...newRecord.account};
+    updatedAccount.email = email;
+    await brAccount.update({
+      id: newAccount.id,
+      account: updatedAccount,
+      sequence: 0
+    });
+    const updatedRecord = await database.collections.account.findOne(
+      {'account.id': newAccount.id});
+    should.exist(updatedRecord);
+    updatedRecord.should.have.keys('_id', 'account', 'meta');
+    const {account, meta} = updatedRecord;
+    meta.should.be.an('object');
+    should.exist(meta.created);
+    meta.created.should.be.a('number');
+    should.exist(meta.updated);
+    meta.updated.should.be.a('number');
+    meta.status.should.equal('active');
+    account.should.be.an('object');
+    account.id.should.equal(newAccount.id);
+    account.email.should.equal(email);
+  });
+  it('should update to add email and change another field', async () => {
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const newAccount = helpers.createAccount(email);
+    delete newAccount.email;
+    const newRecord = await brAccount.insert({account: newAccount});
+    should.not.exist(newRecord.account.email);
+    const updatedAccount = {...newRecord.account};
+    updatedAccount.email = email;
+    updatedAccount.foo = 'bar';
+    await brAccount.update({
+      id: newAccount.id,
+      account: updatedAccount,
+      sequence: 0
+    });
+    const updatedRecord = await database.collections.account.findOne(
+      {'account.id': newAccount.id});
+    should.exist(updatedRecord);
+    updatedRecord.should.have.keys('_id', 'account', 'meta');
+    const {account, meta} = updatedRecord;
+    meta.should.be.an('object');
+    should.exist(meta.created);
+    meta.created.should.be.a('number');
+    should.exist(meta.updated);
+    meta.updated.should.be.a('number');
+    meta.status.should.equal('active');
+    account.should.be.an('object');
+    account.id.should.equal(newAccount.id);
+    account.email.should.equal(email);
+    account.foo.should.equal('bar');
+  });
   it('should throw record sequence does not match', async () => {
     const email = 'dfad8d2f-3320-4609-916a-db7c68dc9b8c@example.com';
     const newAccount = helpers.createAccount(email);
