@@ -64,6 +64,24 @@ describe('update', () => {
     account.id.should.equal(newAccount.id);
     account.email.should.equal('UPDATED.' + email);
   });
+  it('should fail to update with a `null` email', async () => {
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const newAccount = helpers.createAccount(email);
+    const newRecord = await brAccount.insert({account: newAccount});
+    const updatedAccount = {...newRecord.account};
+    updatedAccount.email = null;
+    try {
+      await brAccount.update({
+        id: updatedAccount.id,
+        account: updatedAccount,
+        sequence: 0
+      });
+    } catch(e) {
+      should.exist(e);
+      e.name.should.contain('AssertionError');
+      e.message.should.contain('account.email');
+    }
+  });
   it('should update email and non-email fields', async () => {
     const email = '7f14384e-d9f3-4678-a8f0-6746aa9e09ae@example.com';
     const newAccount = helpers.createAccount(email);
