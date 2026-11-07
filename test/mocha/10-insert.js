@@ -39,6 +39,34 @@ describe('insert', () => {
     proxyRecord.accountId.should.equal(newAccount.id);
     proxyRecord.email.should.equal(newAccount.email);
   });
+  it('inserts multiple accounts without an email', async () => {
+    for(let i = 0; i < 2; ++i) {
+      const email = globalThis.crypto.randomUUID() + '@example.com';
+      const newAccount = helpers.createAccount(email);
+      delete newAccount.email;
+      await brAccount.insert({account: newAccount});
+      const record = await database.collections.account.findOne(
+        {'account.id': newAccount.id});
+      should.exist(record);
+      const {account, meta} = record;
+      meta.should.be.an('object');
+      should.exist(meta.created);
+      meta.created.should.be.a('number');
+      should.exist(meta.updated);
+      meta.updated.should.be.a('number');
+      meta.status.should.equal('active');
+      should.exist(meta.sequence);
+      meta.sequence.should.equal(0);
+      account.should.be.an('object');
+      account.id.should.equal(newAccount.id);
+      should.not.exist(account.email);
+
+      // ensure proxy record is absent
+      const proxyRecord = await database.collections['account-email'].findOne(
+        {email});
+      should.not.exist(proxyRecord);
+    }
+  });
   it('throws error on duplicate account', async () => {
     const email = '99748241-3599-41a0-8445-d092de558b9f@example.com';
     const newAccount = helpers.createAccount(email);
