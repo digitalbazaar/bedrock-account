@@ -789,4 +789,154 @@ describe('update', () => {
     (await proxyCollection.countDocuments({accountId: newAccount.id}))
       .should.equal(0);
   });
+
+  it('does not remove email when refusing a telephone change', async () => {
+    const telephone = '+15550400004';
+    await brAccount.insert({
+      account: helpers.createAccount(undefined, {telephone})
+    });
+    const other = helpers.createAccount(
+      globalThis.crypto.randomUUID() + '@example.com');
+    const record = await brAccount.insert({account: other});
+    // email proxy collection should have email for the account to be updated
+    const proxyCollection = database.collections['account-email'];
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+    let err;
+    try {
+      const newAccount = {...record.account, telephone};
+      // try to remove email concurrently
+      delete newAccount.email;
+      await brAccount.update({
+        id: other.id,
+        account: newAccount,
+        sequence: record.meta.sequence
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('DuplicateError');
+    // pin it to the telephone index: routing telephone values into the email
+    // index would also collide here and pass
+    err.details.uniqueField.should.equal('telephone');
+    err.details.uniqueValue.should.equal(telephone);
+    // proxy collection should still have account email (unchanged)
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+  });
+
+  it('does not remove telephone when refusing an email change', async () => {
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const telephone = '+15550400005';
+    await brAccount.insert({
+      account: helpers.createAccount(email)
+    });
+    const other = helpers.createAccount(undefined, {telephone});
+    const record = await brAccount.insert({account: other});
+    // telephone proxy collection should have record for account to be updated
+    const proxyCollection = database.collections['account-telephone'];
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+    let err;
+    try {
+      const newAccount = {...record.account, email};
+      // try to remove telephone concurrently
+      delete newAccount.telephone;
+      await brAccount.update({
+        id: other.id,
+        account: newAccount,
+        sequence: record.meta.sequence
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('DuplicateError');
+    // pin it to the email index: routing email values into the telephone
+    // index would also collide here and pass
+    err.details.uniqueField.should.equal('email');
+    err.details.uniqueValue.should.equal(email);
+    // proxy collection should still have account telephone (unchanged)
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+  });
+
+  it('does not change email when refusing a telephone change', async () => {
+    const telephone = '+15550400006';
+    await brAccount.insert({
+      account: helpers.createAccount(undefined, {telephone})
+    });
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const other = helpers.createAccount(email);
+    const record = await brAccount.insert({account: other});
+    // email proxy collection should have email for the account to be updated
+    const proxyCollection = database.collections['account-email'];
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+    let err;
+    try {
+      const newAccount = {...record.account, telephone};
+      // try to also change email
+      newAccount.email = 'UPDATED.' + newAccount.email;
+      await brAccount.update({
+        id: other.id,
+        account: newAccount,
+        sequence: record.meta.sequence
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('DuplicateError');
+    // pin it to the telephone index: routing telephone values into the email
+    // index would also collide here and pass
+    err.details.uniqueField.should.equal('telephone');
+    err.details.uniqueValue.should.equal(telephone);
+    // proxy collection should still have account email (unchanged)
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+    // email should not have changed
+    const unchanged = await brAccount.get({id: record.account.id});
+    unchanged.account.email.should.equal(email);
+  });
+
+  it('does not change telephone when refusing an email change', async () => {
+    const email = globalThis.crypto.randomUUID() + '@example.com';
+    const telephone = '+15550400007';
+    await brAccount.insert({
+      account: helpers.createAccount(email)
+    });
+    const other = helpers.createAccount(undefined, {telephone});
+    const record = await brAccount.insert({account: other});
+    // telephone proxy collection should have record for account to be updated
+    const proxyCollection = database.collections['account-telephone'];
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+    let err;
+    try {
+      const newAccount = {...record.account, email};
+      // try to also change telephone
+      newAccount.telephone = '+25551234567';
+      await brAccount.update({
+        id: other.id,
+        account: newAccount,
+        sequence: record.meta.sequence
+      });
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('DuplicateError');
+    // pin it to the email index: routing email values into the telephone
+    // index would also collide here and pass
+    err.details.uniqueField.should.equal('email');
+    err.details.uniqueValue.should.equal(email);
+    // proxy collection should still have account telephone (unchanged)
+    (await proxyCollection.countDocuments({accountId: record.account.id}))
+      .should.equal(1);
+    // telephone should not have changed
+    const unchanged = await brAccount.get({id: record.account.id});
+    unchanged.account.telephone.should.equal(telephone);
+  });
 });
