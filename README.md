@@ -53,8 +53,7 @@ Inserts a new account. The account must contain `id`.
 
 ### bedrock-account.exists(options) ⇒ <code>Promise</code>
 Check for the existence of an account. Naming both an email and a telephone
-number throws; a lookup resolves one unique field at a time. A `null` unique
-field counts as not given, the same as `undefined`.
+number throws; a lookup can only resolve one unique field at a time.
 
 **Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
 **Returns**: <code>Promise</code> - Resolves to a boolean indicating account existence.  
@@ -71,8 +70,8 @@ field counts as not given, the same as `undefined`.
 
 ### bedrock-account.get(options) ⇒ <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject)
 Retrieves an account by ID, email, or telephone number. Naming both an email
-and a telephone number throws; a lookup resolves one unique field at a time.
-A `null` unique field counts as not given, the same as `undefined`.
+and a telephone number throws; a lookup only supports using a single unique
+field at a time.
 
 **Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
 **Returns**: <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject) - - Returns a Promise that resolves to
@@ -114,13 +113,13 @@ the value from `meta.sequence` will be used.
 **Returns**: <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject) - - Returns a Promise that resolves to
   `true` if the update succeeds or an ExplainObject if `explain=true`.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>object</code> | The options to use. |
-| options.id | <code>string</code> | The ID of the account to update. |
-| [options.account] | <code>object</code> | The new account information to use. |
-| [options.meta] | <code>object</code> | The new meta information to use. |
-| [options.sequence] | <code>number</code> | The sequence number that must match the   current record prior to the update if given; can be omitted if `meta` is   given and has, instead, the new `sequence` number (which must be one more   than the existing `sequence` number). |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| options | <code>object</code> |  | The options to use. |
+| [options.account] | <code>object</code> |  | The new account information to use. |
+| [options.id] | <code>string</code> | <code>&quot;account?.id&quot;</code> | The ID of the account to update. |
+| [options.meta] | <code>object</code> |  | The new meta information to use. |
+| [options.sequence] | <code>number</code> |  | The sequence number that must match the   current record prior to the update if given; can be omitted if `meta` is   given and has, instead, the new `sequence` number (which must be one more   than the existing `sequence` number). |
 
 <a name="module_bedrock-account.setStatus"></a>
 
