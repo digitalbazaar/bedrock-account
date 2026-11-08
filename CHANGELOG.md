@@ -1,6 +1,6 @@
 # bedrock-account ChangeLog
 
-## 10.1.0 - 2026-mm-dd
+## 10.1.0 - 2026-11-07
 
 ### Added
 - Support `telephone` as an account identifier alongside `email`. It is a
