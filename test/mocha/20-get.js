@@ -23,6 +23,18 @@ describe('get', () => {
     should.exist(err);
     err.name.should.equal('NotFoundError');
   });
+  it('throws when no ID or unique field value is given', async () => {
+    let err;
+    try {
+      await brAccount.get({});
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.name.should.equal('Error');
+    err.message.should.include('Either "id" or one of "');
+    console.log('err.message', err.message);
+  });
   it('returns account when active option is not specified', async () => {
     // should get account even if status is `deleted`
     const {account} = accounts['will-be-deleted@example.com'];
