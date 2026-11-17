@@ -1,5 +1,10 @@
 # bedrock-account ChangeLog
 
+## 10.2.0 - TBD
+
+### Added
+- Add `getAccountPolicy()` and configurable policy defaults.
+
 ## 10.1.0 - 2026-11-07
 
 ### Added

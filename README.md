@@ -1,6 +1,20 @@
 # bedrock-account
 User accounts for Bedrock Applications
 
+## Account policy
+
+Set `config.account.policyDefaults.default` to store a copy of that policy on
+new accounts. Trusted insert callers and account insert listeners can supply
+`meta.policy` to choose the policy for a specific account.
+
+`getAccountPolicy({id})` returns a copy of the stored policy when present. For
+accounts without a stored policy, it uses `policyDefaults.legacy.policy` when
+the record's creation time is strictly before `policyDefaults.legacy.createdBefore`.
+Set the cutoff to a Unix timestamp in milliseconds. A record without an eligible
+creation time uses the configured default or an empty policy.
+
+Meter policy grants under `meters.create` map product IDs to booleans.
+
 ## API Reference
 ## Modules
 
@@ -31,6 +45,7 @@ User accounts for Bedrock Applications
     * [.insert(options)](#module_bedrock-account.insert) ⇒ <code>Promise</code>
     * [.exists(options)](#module_bedrock-account.exists) ⇒ <code>Promise</code>
     * [.get(options)](#module_bedrock-account.get) ⇒ <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject)
+    * [.getAccountPolicy(options)](#module_bedrock-account.getAccountPolicy) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.getAll(options)](#module_bedrock-account.getAll) ⇒ <code>Promise</code>
     * [.update(options)](#module_bedrock-account.update) ⇒ <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject)
     * [.setStatus(options)](#module_bedrock-account.setStatus) ⇒ <code>Promise</code>
@@ -85,6 +100,19 @@ field at a time.
 | [options.email] | <code>string</code> |  | The email of the account to retrieve. |
 | [options.telephone] | <code>string</code> |  | The telephone number of the account to   retrieve. |
 | [options.explain] | <code>boolean</code> | <code>false</code> | An optional explain boolean. |
+
+<a name="module_bedrock-account.getAccountPolicy"></a>
+
+### bedrock-account.getAccountPolicy(options) ⇒ <code>Promise.&lt;object&gt;</code>
+Gets an account's stored policy or the configured policy for its age.
+
+**Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - A copy of the account policy.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.id | <code>string</code> | The account ID. |
 
 <a name="module_bedrock-account.getAll"></a>
 
