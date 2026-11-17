@@ -7,7 +7,8 @@ Set `config.account.policyDefaults.default` to store a copy of that policy on
 new accounts. Trusted insert callers and account insert listeners can supply
 `meta.policy` to choose the policy for a specific account.
 
-`getAccountPolicy({id})` returns a copy of the stored policy when present. For
+`getAccountPolicy({id})` returns a copy of the stored policy when present. Pass
+`{record}` instead when the account record is already available. For
 accounts without a stored policy, it uses `policyDefaults.legacy.policy` when
 the record's creation time is strictly before `policyDefaults.legacy.createdBefore`.
 Set the cutoff to a Unix timestamp in milliseconds. A record without an eligible
@@ -112,7 +113,8 @@ Gets an account's stored policy or the configured policy for its age.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| options.id | <code>string</code> | The account ID. |
+| [options.id] | <code>string</code> | The account ID. |
+| [options.record] | <code>object</code> | An already fetched account record. |
 
 <a name="module_bedrock-account.getAll"></a>
 
