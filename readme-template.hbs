@@ -3,18 +3,10 @@ User accounts for Bedrock Applications
 
 ## Account policy
 
-Set `config.account.policyDefaults.default` to store a copy of that policy on
-new accounts. Trusted insert callers and account insert listeners can supply
-`meta.policy` to choose the policy for a specific account.
-
-`getAccountPolicy({id})` returns a copy of the stored policy when present. Pass
-`{record}` instead when the account record is already available. For
-accounts without a stored policy, it uses `policyDefaults.legacy.policy` when
-the record's creation time is strictly before `policyDefaults.legacy.createdBefore`.
-Set the cutoff to a Unix timestamp in milliseconds. A record without an eligible
-creation time uses the configured default or an empty policy.
-
-Meter policy grants under `meters.create` map product IDs to booleans.
+`getAccountPolicy({id, record})` takes either an account ID or a fetched
+record. It returns the stored policy, the legacy policy for an account
+created before the configured cutoff, or the configured default. If none
+applies and the default is unset, it returns `{}`.
 
 ## API Reference
 {{>main}}
