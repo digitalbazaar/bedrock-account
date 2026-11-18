@@ -3,6 +3,7 @@
  */
 import * as brAccount from '@bedrock/account';
 import * as helpers from './helpers.js';
+import {config} from '@bedrock/core';
 import {mockData} from './mock.data.js';
 
 let accounts;
@@ -61,6 +62,35 @@ describe('get', () => {
     record.account.id.should.equal(account.id);
     record.account.email.should.equal(account.email);
     record.meta.status.should.equal('active');
+  });
+  it('gets the stored account policy by ID or record', async () => {
+    const account = helpers.createAccount('stored-policy@example.com');
+    const policy = {meters: {create: {'product-a': true}}};
+    await brAccount.insert({account, meta: {policy}});
+    const {id} = account;
+    const record = await brAccount.get({id});
+
+    (await brAccount.getAccountPolicy({id})).should.deep.equal(policy);
+    (await brAccount.getAccountPolicy({record})).should.deep.equal(policy);
+  });
+  it('uses the legacy policy only before the cutoff', async () => {
+    const {account: {id}} = accounts['alpha@example.com'];
+    const {meta: {created}} = await brAccount.get({id});
+    const originalDefaults = config.account.policyDefaults;
+    const legacyPolicy = {meters: {create: {'product-a': true}}};
+
+    try {
+      config.account.policyDefaults = {
+        default: {},
+        legacy: {createdBefore: created + 1, policy: legacyPolicy}
+      };
+      (await brAccount.getAccountPolicy({id})).should.deep.equal(legacyPolicy);
+
+      config.account.policyDefaults.legacy.createdBefore = created;
+      (await brAccount.getAccountPolicy({id})).should.deep.equal({});
+    } finally {
+      config.account.policyDefaults = originalDefaults;
+    }
   });
   it('gets existing account by email', async () => {
     const {account} = accounts['alpha@example.com'];

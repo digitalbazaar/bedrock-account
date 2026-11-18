@@ -1,6 +1,13 @@
 # bedrock-account
 User accounts for Bedrock Applications
 
+## Account policy
+
+`getAccountPolicy({id, record})` takes either an account ID or a fetched
+record. It returns the stored policy, the legacy policy for an account
+created before the configured cutoff, or the configured default. If none
+applies and the default is unset, it returns `{}`.
+
 ## API Reference
 ## Modules
 
@@ -31,6 +38,7 @@ User accounts for Bedrock Applications
     * [.insert(options)](#module_bedrock-account.insert) ⇒ <code>Promise</code>
     * [.exists(options)](#module_bedrock-account.exists) ⇒ <code>Promise</code>
     * [.get(options)](#module_bedrock-account.get) ⇒ <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject)
+    * [.getAccountPolicy(options)](#module_bedrock-account.getAccountPolicy) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.getAll(options)](#module_bedrock-account.getAll) ⇒ <code>Promise</code>
     * [.update(options)](#module_bedrock-account.update) ⇒ <code>Promise</code> \| [<code>ExplainObject</code>](#ExplainObject)
     * [.setStatus(options)](#module_bedrock-account.setStatus) ⇒ <code>Promise</code>
@@ -85,6 +93,20 @@ field at a time.
 | [options.email] | <code>string</code> |  | The email of the account to retrieve. |
 | [options.telephone] | <code>string</code> |  | The telephone number of the account to   retrieve. |
 | [options.explain] | <code>boolean</code> | <code>false</code> | An optional explain boolean. |
+
+<a name="module_bedrock-account.getAccountPolicy"></a>
+
+### bedrock-account.getAccountPolicy(options) ⇒ <code>Promise.&lt;object&gt;</code>
+Gets an account's stored policy or the configured policy for its age.
+
+**Kind**: static method of [<code>bedrock-account</code>](#module_bedrock-account)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - A copy of the account policy.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| [options.id] | <code>string</code> | The account ID. |
+| [options.record] | <code>object</code> | An already fetched account record. |
 
 <a name="module_bedrock-account.getAll"></a>
 

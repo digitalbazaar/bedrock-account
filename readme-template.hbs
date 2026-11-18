@@ -1,5 +1,12 @@
 # bedrock-account
 User accounts for Bedrock Applications
 
+## Account policy
+
+`getAccountPolicy({id, record})` takes either an account ID or a fetched
+record. It returns the stored policy, the legacy policy for an account
+created before the configured cutoff, or the configured default. If none
+applies and the default is unset, it returns `{}`.
+
 ## API Reference
 {{>main}}
